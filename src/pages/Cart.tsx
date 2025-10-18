@@ -3,16 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Trash2, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 const Cart = () => {
-  // Mock cart items - will be replaced with actual cart data
-  const cartItems = [
-    { id: "1", name: "Diwali Gift Hamper", price: 1299, quantity: 1, image: "https://images.unsplash.com/photo-1607081692251-5e8f8e5f2dc3?w=200" },
-    { id: "2", name: "Birthday Surprise Box", price: 999, quantity: 2, image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=200" },
-  ];
+  const { cartItems, removeFromCart, updateQuantity, loading } = useCart();
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = 99;
+  const subtotal = cartItems.reduce((acc, item) => acc + Number(item.products.price) * item.quantity, 0);
+  const shipping = cartItems.length > 0 ? 99 : 0;
   const total = subtotal + shipping;
 
   return (
@@ -37,24 +34,40 @@ const Cart = () => {
                   <Card key={item.id} className="p-4">
                     <div className="flex gap-4">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.products.image}
+                        alt={item.products.name}
                         className="h-24 w-24 rounded-lg object-cover"
                       />
                       <div className="flex-1">
-                        <h3 className="font-semibold">{item.name}</h3>
-                        <p className="text-lg font-bold text-primary">₹{item.price}</p>
+                        <h3 className="font-semibold">{item.products.name}</h3>
+                        <p className="text-lg font-bold text-primary">₹{Number(item.products.price).toFixed(2)}</p>
                         <div className="mt-2 flex items-center gap-2">
-                          <Button variant="outline" size="icon" className="h-8 w-8">
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            className="h-8 w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
+                          >
                             <Minus className="h-4 w-4" />
                           </Button>
                           <span className="w-8 text-center">{item.quantity}</span>
-                          <Button variant="outline" size="icon" className="h-8 w-8">
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            className="h-8 w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          >
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" className="text-destructive">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="text-destructive"
+                        onClick={() => removeFromCart(item.id)}
+                      >
                         <Trash2 className="h-5 w-5" />
                       </Button>
                     </div>
@@ -70,15 +83,15 @@ const Cart = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>₹{subtotal}</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span>₹{shipping}</span>
+                  <span>₹{shipping.toFixed(2)}</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">₹{total}</span>
+                  <span className="text-primary">₹{total.toFixed(2)}</span>
                 </div>
               </div>
               <Link to="/checkout">

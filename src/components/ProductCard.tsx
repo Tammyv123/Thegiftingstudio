@@ -1,8 +1,8 @@
 import { Heart, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 interface ProductCardProps {
   id: string;
@@ -13,15 +13,21 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  
+  const isWishlisted = isInWishlist(id);
 
   const handleAddToCart = () => {
-    toast.success(`${name} added to cart!`);
+    addToCart(id);
   };
 
   const handleToggleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
-    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+    if (isWishlisted) {
+      removeFromWishlist(id);
+    } else {
+      addToWishlist(id);
+    }
   };
 
   return (

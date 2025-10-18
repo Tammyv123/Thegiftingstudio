@@ -1,13 +1,9 @@
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 const Wishlist = () => {
-  // Mock wishlist items - will be replaced with actual data
-  const wishlistItems = [
-    { id: "1", name: "Diwali Gift Hamper", price: 1299, image: "https://images.unsplash.com/photo-1607081692251-5e8f8e5f2dc3?w=400", category: "Festive" },
-    { id: "2", name: "Birthday Surprise Box", price: 999, image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400", category: "Birthday" },
-    { id: "3", name: "Romantic Gift Set", price: 1499, image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400", category: "Anniversary" },
-  ];
+  const { wishlistItems, loading } = useWishlist();
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -22,8 +18,15 @@ const Wishlist = () => {
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {wishlistItems.map((product) => (
-              <ProductCard key={product.id} {...product} />
+            {wishlistItems.map((item) => (
+              <ProductCard 
+                key={item.id} 
+                id={item.products.id}
+                name={item.products.name}
+                price={Number(item.products.price)}
+                image={item.products.image}
+                category={item.products.category}
+              />
             ))}
           </div>
         )}
