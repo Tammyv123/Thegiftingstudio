@@ -13,6 +13,7 @@ import WeddingGifts from "./pages/WeddingGifts";
 import PersonalisedGifts from "./pages/PersonalisedGifts";
 import BirthdayGifts from "./pages/BirthdayGifts";
 import AnniversaryGifts from "./pages/AnniversaryGifts";
+import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
@@ -36,6 +37,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/products" element={<Products />} />
                 <Route path="/festive" element={<FestiveGifts />} />
                 <Route path="/wedding" element={<WeddingGifts />} />
                 <Route path="/personalised" element={<PersonalisedGifts />} />

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { CategorySection } from "@/components/CategorySection";
 import { ProductCard } from "@/components/ProductCard";
@@ -34,9 +35,11 @@ const Index = () => {
             Discover thoughtfully curated gifts for every celebration. From festive hampers to personalized treasures.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="shadow-hover">
-              <Gift className="mr-2 h-5 w-5" />
-              Browse Collections
+            <Button size="lg" variant="secondary" className="shadow-hover" asChild>
+              <Link to="/products">
+                <Gift className="mr-2 h-5 w-5" />
+                Browse Collections
+              </Link>
             </Button>
             <Button
               size="lg"
