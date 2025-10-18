@@ -3,22 +3,13 @@ import { CategorySection } from "@/components/CategorySection";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Gift, Sparkles, Heart, MessageCircle } from "lucide-react";
+import { useProducts } from "@/hooks/useProducts";
 
 const Index = () => {
-  // Sample products data - in production, this would come from backend
-  const festiveProducts = [
-    { id: "1", name: "Diwali Gift Hamper", price: 1299, image: "https://images.unsplash.com/photo-1607081692251-5e8f8e5f2dc3?w=400", category: "Festive" },
-    { id: "2", name: "Raksha Bandhan Special", price: 899, image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400", category: "Festive" },
-    { id: "3", name: "Christmas Gift Box", price: 1499, image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?w=400", category: "Festive" },
-    { id: "4", name: "Holi Color Set", price: 699, image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=400", category: "Festive" },
-  ];
-
-  const birthdayProducts = [
-    { id: "5", name: "Birthday Surprise Box", price: 999, image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400", category: "Birthday" },
-    { id: "6", name: "Cake & Flowers Combo", price: 1599, image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=400", category: "Birthday" },
-    { id: "7", name: "Party Celebration Kit", price: 799, image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400", category: "Birthday" },
-    { id: "8", name: "Personalized Birthday Mug", price: 499, image: "https://images.unsplash.com/photo-1514022005183-9c53b85cd2ed?w=400", category: "Birthday" },
-  ];
+  const { data: allProducts = [] } = useProducts();
+  
+  const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
+  const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
 
   const whatsappMessage = "Hi! I'd like to place an order from The Gifting Studio.";
   const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
@@ -119,7 +110,14 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {festiveProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard 
+                key={product.id} 
+                id={product.id}
+                name={product.name}
+                price={Number(product.price)}
+                image={product.image}
+                category={product.category}
+              />
             ))}
           </div>
         </div>
@@ -137,7 +135,14 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {birthdayProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard 
+                key={product.id} 
+                id={product.id}
+                name={product.name}
+                price={Number(product.price)}
+                image={product.image}
+                category={product.category}
+              />
             ))}
           </div>
         </div>

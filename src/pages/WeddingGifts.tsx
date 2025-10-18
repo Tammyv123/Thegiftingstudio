@@ -1,16 +1,10 @@
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { useProducts } from "@/hooks/useProducts";
 
 const WeddingGifts = () => {
-  const products = [
-    { id: "w1", name: "Royal Wedding Gift Set", price: 2499, image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400", category: "Wedding" },
-    { id: "w2", name: "Couple Blessing Hamper", price: 1899, image: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400", category: "Wedding" },
-    { id: "w3", name: "Traditional Silver Gift Box", price: 3499, image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=400", category: "Wedding" },
-    { id: "w4", name: "Decorative Wedding Basket", price: 1599, image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400", category: "Wedding" },
-    { id: "w5", name: "Premium Crystal Gift Set", price: 2999, image: "https://images.unsplash.com/photo-1535478044878-3ed83d5456ef?w=400", category: "Wedding" },
-    { id: "w6", name: "Gold Plated Wedding Gift", price: 4499, image: "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=400", category: "Wedding" },
-  ];
+  const { data: products = [] } = useProducts("Wedding");
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -35,7 +29,14 @@ const WeddingGifts = () => {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard 
+              key={product.id} 
+              id={product.id}
+              name={product.name}
+              price={Number(product.price)}
+              image={product.image}
+              category={product.category}
+            />
           ))}
         </div>
       </section>

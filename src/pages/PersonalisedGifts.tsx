@@ -1,16 +1,10 @@
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { useProducts } from "@/hooks/useProducts";
 
 const PersonalisedGifts = () => {
-  const products = [
-    { id: "p1", name: "Custom Photo Frame", price: 699, image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400", category: "Personalised" },
-    { id: "p2", name: "Engraved Wooden Box", price: 899, image: "https://images.unsplash.com/photo-1514022005183-9c53b85cd2ed?w=400", category: "Personalised" },
-    { id: "p3", name: "Personalized Coffee Mug", price: 499, image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", category: "Personalised" },
-    { id: "p4", name: "Custom Name Keychain", price: 299, image: "https://images.unsplash.com/photo-1554034483-04fda0d3507b?w=400", category: "Personalised" },
-    { id: "p5", name: "Engraved Crystal Trophy", price: 1299, image: "https://images.unsplash.com/photo-1535478044878-3ed83d5456ef?w=400", category: "Personalised" },
-    { id: "p6", name: "Personalized Cushion", price: 799, image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400", category: "Personalised" },
-  ];
+  const { data: products = [] } = useProducts("Personalised");
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -35,7 +29,14 @@ const PersonalisedGifts = () => {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard 
+              key={product.id} 
+              id={product.id}
+              name={product.name}
+              price={Number(product.price)}
+              image={product.image}
+              category={product.category}
+            />
           ))}
         </div>
       </section>
