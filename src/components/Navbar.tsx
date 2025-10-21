@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Heart, ShoppingCart, User, LogOut, Search, Truck, Gift, UtensilsCrossed, Award, Sparkles, Flame, Package, Briefcase } from "lucide-react";
+import { Menu, Heart, ShoppingCart, User, LogOut, Search, Truck, Gift, UtensilsCrossed, Award, Sparkles, Flame, Package, Briefcase, Home, Cake, PartyPopper, Flower2, Coffee, BookHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   { name: "Festive Gifts", path: "/festive" },
@@ -16,12 +18,20 @@ const categories = [
 ];
 
 const categoryNav = [
-  { name: "Festive", path: "/festive", icon: Sparkles, gradient: "from-rose-pink to-sunshine-yellow" },
-  { name: "Wedding", path: "/wedding", icon: Gift, gradient: "from-lavender to-mint-green" },
-  { name: "Birthday", path: "/birthday", icon: Award, gradient: "from-sunshine-yellow to-rose-pink" },
-  { name: "Anniversary", path: "/anniversary", icon: UtensilsCrossed, gradient: "from-mint-green to-lavender" },
-  { name: "Personalised", path: "/personalised", icon: Package, gradient: "from-rose-pink to-lavender" },
-  { name: "All Products", path: "/products", icon: Briefcase, gradient: "from-sunshine-yellow to-mint-green" },
+  { name: "All Products", path: "/products", icon: Home, gradient: "from-rose-pink to-sunshine-yellow" },
+  { name: "Festive Gifts", path: "/festive", icon: Sparkles, gradient: "from-sunshine-yellow to-lavender" },
+  { name: "Wedding Gifts", path: "/wedding", icon: Gift, gradient: "from-lavender to-mint-green" },
+  { name: "Birthday Gifts", path: "/birthday", icon: Cake, gradient: "from-mint-green to-rose-pink" },
+  { name: "Anniversary", path: "/anniversary", icon: BookHeart, gradient: "from-rose-pink to-lavender" },
+  { name: "Personalised", path: "/personalised", icon: Package, gradient: "from-lavender to-sunshine-yellow" },
+  { name: "Premium Hampers", path: "/products", icon: Award, gradient: "from-sunshine-yellow to-mint-green" },
+  { name: "Gourmet", path: "/products", icon: UtensilsCrossed, gradient: "from-mint-green to-lavender" },
+  { name: "Party Supplies", path: "/products", icon: PartyPopper, gradient: "from-rose-pink to-sunshine-yellow" },
+  { name: "Flowers", path: "/products", icon: Flower2, gradient: "from-sunshine-yellow to-rose-pink" },
+  { name: "Diyas & Candles", path: "/products", icon: Flame, gradient: "from-lavender to-mint-green" },
+  { name: "Corporate Gifts", path: "/products", icon: Briefcase, gradient: "from-mint-green to-sunshine-yellow" },
+  { name: "Same Day", path: "/products", icon: Truck, gradient: "from-rose-pink to-lavender" },
+  { name: "Gourmet Coffee", path: "/products", icon: Coffee, gradient: "from-sunshine-yellow to-mint-green" },
 ];
 
 export const Navbar = () => {
@@ -29,6 +39,15 @@ export const Navbar = () => {
   const { cartItems } = useCart();
   const { wishlistItems } = useWishlist();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -68,17 +87,19 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {categories.map((category) => (
-            <Link
-              key={category.path}
-              to={category.path}
-              className="px-4 py-2 text-sm font-medium transition-colors hover:text-primary rounded-lg hover:bg-secondary/50"
-            >
-              {category.name}
-            </Link>
-          ))}
-        </nav>
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search for gifts, occasions, or products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 h-10 bg-muted/50 border-border/50 focus:bg-background"
+            />
+          </div>
+        </form>
 
         <div className="flex items-center gap-2">
           <Link to="/search">
