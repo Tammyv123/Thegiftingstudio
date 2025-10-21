@@ -16,14 +16,12 @@ const categories = [
 ];
 
 const categoryNav = [
-  { name: "Same Day Delivery", path: "/products", icon: Truck },
-  { name: "Festive Gifts", path: "/festive", icon: Sparkles },
-  { name: "Premium Hampers", path: "/products", icon: Award },
-  { name: "Gourmet Hampers", path: "/products", icon: UtensilsCrossed },
-  { name: "Wedding Gifts", path: "/wedding", icon: Gift },
-  { name: "Diyas & Candles", path: "/products", icon: Flame },
-  { name: "Curated Collection", path: "/products", icon: Package },
-  { name: "Corporate Gifts", path: "/products", icon: Briefcase },
+  { name: "Festive", path: "/festive", icon: Sparkles, gradient: "from-rose-pink to-sunshine-yellow" },
+  { name: "Wedding", path: "/wedding", icon: Gift, gradient: "from-lavender to-mint-green" },
+  { name: "Birthday", path: "/birthday", icon: Award, gradient: "from-sunshine-yellow to-rose-pink" },
+  { name: "Anniversary", path: "/anniversary", icon: UtensilsCrossed, gradient: "from-mint-green to-lavender" },
+  { name: "Personalised", path: "/personalised", icon: Package, gradient: "from-rose-pink to-lavender" },
+  { name: "All Products", path: "/products", icon: Briefcase, gradient: "from-sunshine-yellow to-mint-green" },
 ];
 
 export const Navbar = () => {
@@ -133,18 +131,22 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Category Navigation Bar */}
+      {/* Category Stories Navigation */}
       <div className="border-b bg-background">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center overflow-x-auto py-3 gap-1">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-start gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
             {categoryNav.map((category) => (
               <Link
                 key={category.path + category.name}
                 to={category.path}
-                className="flex flex-col items-center justify-center min-w-[120px] px-4 py-2 rounded-lg transition-colors hover:bg-muted/50 group"
+                className="flex flex-col items-center gap-2 flex-shrink-0 snap-start group"
               >
-                <category.icon className="h-8 w-8 mb-2 text-primary transition-transform group-hover:scale-110" strokeWidth={1.5} />
-                <span className="text-xs font-medium text-foreground text-center whitespace-nowrap">
+                <div className={`relative w-20 h-20 rounded-full bg-gradient-to-br ${category.gradient} p-1 transition-transform hover:scale-105`}>
+                  <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                    <category.icon className="h-9 w-9 text-primary transition-transform group-hover:scale-110" strokeWidth={1.5} />
+                  </div>
+                </div>
+                <span className="text-xs font-medium text-foreground text-center max-w-[80px] line-clamp-2">
                   {category.name}
                 </span>
               </Link>
