@@ -14,6 +14,7 @@ import PersonalisedGifts from "./pages/PersonalisedGifts";
 import BirthdayGifts from "./pages/BirthdayGifts";
 import AnniversaryGifts from "./pages/AnniversaryGifts";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/festive" element={<FestiveGifts />} />
                 <Route path="/wedding" element={<WeddingGifts />} />
                 <Route path="/personalised" element={<PersonalisedGifts />} />

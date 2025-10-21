@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   id: string;
@@ -32,17 +33,21 @@ export const ProductCard = ({ id, name, price, image, category }: ProductCardPro
 
   return (
     <Card className="group overflow-hidden border-border/50 transition-all duration-300 hover:shadow-hover bg-gradient-card">
-      <div className="relative aspect-square overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-        />
+      <Link to={`/product/${id}`}>
+        <div className="relative aspect-square overflow-hidden cursor-pointer">
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
         <Button
           variant="ghost"
           size="icon"
           className="absolute right-2 top-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background"
-          onClick={handleToggleWishlist}
+          onClick={(e) => {
+            e.preventDefault();
+            handleToggleWishlist();
+          }}
         >
           <Heart
             className={`h-5 w-5 transition-colors ${
@@ -55,15 +60,21 @@ export const ProductCard = ({ id, name, price, image, category }: ProductCardPro
             {category}
           </span>
         </div>
-      </div>
+        </div>
+      </Link>
       <CardContent className="p-4">
-        <h3 className="font-semibold text-lg line-clamp-2 mb-2">{name}</h3>
+        <Link to={`/product/${id}`}>
+          <h3 className="font-semibold text-lg line-clamp-2 mb-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
+        </Link>
         <p className="text-2xl font-bold text-primary">₹{price}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button
           className="w-full shadow-soft"
-          onClick={handleAddToCart}
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Add to Cart
