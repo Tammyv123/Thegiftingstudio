@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, Heart, ShoppingCart, User, LogOut, Search } from "lucide-react";
+import { Menu, Heart, ShoppingCart, User, LogOut, Search, Truck, Gift, UtensilsCrossed, Award, Sparkles, Flame, Package, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
@@ -15,6 +15,17 @@ const categories = [
   { name: "Anniversary Gifts", path: "/anniversary" },
 ];
 
+const categoryNav = [
+  { name: "Same Day Delivery", path: "/products", icon: Truck },
+  { name: "Festive Gifts", path: "/festive", icon: Sparkles },
+  { name: "Premium Hampers", path: "/products", icon: Award },
+  { name: "Gourmet Hampers", path: "/products", icon: UtensilsCrossed },
+  { name: "Wedding Gifts", path: "/wedding", icon: Gift },
+  { name: "Diyas & Candles", path: "/products", icon: Flame },
+  { name: "Curated Collection", path: "/products", icon: Package },
+  { name: "Corporate Gifts", path: "/products", icon: Briefcase },
+];
+
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const { cartItems } = useCart();
@@ -22,8 +33,9 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="border-b">
+        <div className="container flex h-16 items-center justify-between px-4">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
@@ -117,6 +129,27 @@ export const Navbar = () => {
               Contact Us
             </Button>
           </Link>
+        </div>
+        </div>
+      </div>
+
+      {/* Category Navigation Bar */}
+      <div className="border-b bg-background">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center overflow-x-auto py-3 gap-1">
+            {categoryNav.map((category) => (
+              <Link
+                key={category.path + category.name}
+                to={category.path}
+                className="flex flex-col items-center justify-center min-w-[120px] px-4 py-2 rounded-lg transition-colors hover:bg-muted/50 group"
+              >
+                <category.icon className="h-8 w-8 mb-2 text-primary transition-transform group-hover:scale-110" strokeWidth={1.5} />
+                <span className="text-xs font-medium text-foreground text-center whitespace-nowrap">
+                  {category.name}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </header>
