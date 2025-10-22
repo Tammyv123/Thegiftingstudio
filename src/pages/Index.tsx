@@ -12,8 +12,10 @@ const Index = () => {
   const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
   const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
 
-  const whatsappMessage = "Hi! I'd like to place an order from The Gifting Studio.";
-  const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+  // ✅ Correct WhatsApp link syntax
+  const phoneNumber = "918447717322"; // country code included
+  const message = "Hi! I'd like to place an order from The Gifting Studio.";
+  const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -43,8 +45,8 @@ const Index = () => {
             </Button>
             <Button
               size="lg"
-              variant="outline"
-              className="border-white/30 text-primary-foreground hover:bg-white/10"
+              variant="secondary"
+              className="shadow-hover text-green-600" // WhatsApp green
               asChild
             >
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
