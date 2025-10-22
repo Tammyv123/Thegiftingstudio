@@ -106,11 +106,6 @@ export const Navbar = () => {
         </form>
 
         <div className="flex items-center gap-2">
-          <Link to="/search">
-            <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-            </Button>
-          </Link>
           <Link to="/wishlist">
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="h-5 w-5" />
