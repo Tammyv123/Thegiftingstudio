@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
@@ -13,12 +14,22 @@ import {
 import { useProducts } from "@/hooks/useProducts";
 
 const Search = () => {
+  const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const { data: allProducts = [], isLoading } = useProducts();
 
+  useEffect(() => {
+    const query = searchParams.get("q");
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [searchParams]);
+
   const filteredProducts = allProducts.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery === "" || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -82,7 +93,8 @@ const Search = () => {
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-muted-foreground">No products found. Try adjusting your search.</p>
+                <h3 className="text-2xl font-semibold mb-2">No products found</h3>
+                <p className="text-muted-foreground">We'll be launching some soon!</p>
               </div>
             )}
           </>

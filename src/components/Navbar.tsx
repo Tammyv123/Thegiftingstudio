@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, Heart, ShoppingCart, User, LogOut, Search, Truck, Gift, UtensilsCrossed, Award, Sparkles, Flame, Package, Briefcase, Home, Cake, PartyPopper, Flower2, Coffee, BookHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { SearchResults } from "@/components/SearchResults";
 
 const categories = [
   { name: "Festive Gifts", path: "/festive" },
@@ -41,7 +39,14 @@ export const Navbar = () => {
   const { wishlistItems } = useWishlist();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -82,28 +87,23 @@ export const Navbar = () => {
         </Link>
 
         {/* Search Bar */}
-        <Popover open={showSearchResults && searchQuery.length > 0} onOpenChange={setShowSearchResults}>
-          <PopoverTrigger asChild>
-            <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search for gifts, occasions, or products..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSearchResults(e.target.value.length > 0);
-                  }}
-                  className="w-full pl-10 pr-4 h-10 bg-muted/50 border-border/50 focus:bg-background"
-                />
-              </div>
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-[600px] p-4" align="start">
-            <SearchResults searchQuery={searchQuery} />
-          </PopoverContent>
-        </Popover>
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-8">
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search for gifts, occasions, or products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch(e);
+                }
+              }}
+              className="w-full pl-10 pr-4 h-10 bg-muted/50 border-border/50 focus:bg-background"
+            />
+          </div>
+        </form>
 
         <div className="flex items-center gap-2">
           <Link to="/search">
