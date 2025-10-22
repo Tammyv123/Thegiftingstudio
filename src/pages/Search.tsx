@@ -2,21 +2,11 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
-import { Input } from "@/components/ui/input";
-import { Search as SearchIcon } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useProducts } from "@/hooks/useProducts";
 
 const Search = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const { data: allProducts = [], isLoading } = useProducts();
 
   useEffect(() => {
@@ -27,11 +17,9 @@ const Search = () => {
   }, [searchParams]);
 
   const filteredProducts = allProducts.filter((product) => {
-    const matchesSearch = searchQuery === "" || 
+    return searchQuery === "" || 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -39,33 +27,10 @@ const Search = () => {
       <Navbar />
       
       <div className="container mx-auto px-4 py-16">
-        <h1 className="mb-8 text-4xl font-bold">Search Products</h1>
+        <h1 className="mb-8 text-4xl font-bold">
+          {searchQuery ? `Search Results for "${searchQuery}"` : "Search Products"}
+        </h1>
         
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row">
-          <div className="relative flex-1">
-            <SearchIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search for gifts..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="Festive">Festive Gifts</SelectItem>
-              <SelectItem value="Wedding">Wedding Gifts</SelectItem>
-              <SelectItem value="Personalised">Personalised Gifts</SelectItem>
-              <SelectItem value="Birthday">Birthday Gifts</SelectItem>
-              <SelectItem value="Anniversary">Anniversary Gifts</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
         <p className="mb-6 text-muted-foreground">
           {isLoading ? "Loading..." : `${filteredProducts.length} product${filteredProducts.length !== 1 ? "s" : ""} found`}
         </p>
