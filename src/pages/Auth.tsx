@@ -4,44 +4,72 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [contact, setContact] = useState("");
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [contactType, setContactType] = useState<"email" | "phone">("email");
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const isValidEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
+
+  const isValidPhone = (value: string) => {
+    return /^\+?[1-9]\d{1,14}$/.test(value);
+  };
+
+  const handleContactChange = (value: string) => {
+    setContact(value);
+    if (isValidEmail(value)) {
+      setContactType("email");
+    } else if (isValidPhone(value)) {
+      setContactType("phone");
+    }
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-      },
-    });
+
+    const isEmail = isValidEmail(contact);
+    const isPhone = isValidPhone(contact);
+
+    if (!isEmail && !isPhone) {
+      toast.error("Please enter a valid email or phone number");
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithOtp(
+      isEmail 
+        ? { email: contact }
+        : { phone: contact }
+    );
 
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account created! You can now sign in.");
+      toast.success(`OTP sent to your ${isEmail ? "email" : "phone"}!`);
+      setOtpSent(true);
     }
     setLoading(false);
   };
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.verifyOtp(
+      contactType === "email"
+        ? { email: contact, token: otp, type: "email" }
+        : { phone: contact, token: otp, type: "sms" }
+    );
 
     if (error) {
       toast.error(error.message);
@@ -60,60 +88,60 @@ const Auth = () => {
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Welcome to The Gifting Studio</CardTitle>
-            <CardDescription>Sign in or create an account to continue</CardDescription>
+            <CardDescription>
+              {otpSent 
+                ? "Enter the OTP sent to your contact" 
+                : "Enter your email or phone number to continue"}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="signin">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="signin">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Signing in..." : "Sign In"}
+            {!otpSent ? (
+              <form onSubmit={handleSendOtp} className="space-y-4">
+                <Input
+                  type="text"
+                  placeholder="Email or Phone Number (+1234567890)"
+                  value={contact}
+                  onChange={(e) => handleContactChange(e.target.value)}
+                  required
+                />
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? "Sending OTP..." : "Send OTP"}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div className="flex flex-col items-center space-y-4">
+                  <InputOTP
+                    maxLength={6}
+                    value={otp}
+                    onChange={(value) => setOtp(value)}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                  <Button type="submit" className="w-full" disabled={loading || otp.length !== 6}>
+                    {loading ? "Verifying..." : "Verify OTP"}
                   </Button>
-                </form>
-              </TabsContent>
-              
-              <TabsContent value="signup">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                  <Input
-                    type="password"
-                    placeholder="Password (min 6 characters)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                  />
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Creating account..." : "Sign Up"}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => {
+                      setOtpSent(false);
+                      setOtp("");
+                    }}
+                  >
+                    Change Contact
                   </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
+                </div>
+              </form>
+            )}
           </CardContent>
         </Card>
       </div>
