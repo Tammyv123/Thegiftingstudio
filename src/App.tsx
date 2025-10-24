@@ -18,6 +18,9 @@ import ProductDetail from "./pages/ProductDetail";
 import PremiumHampers from "./pages/PremiumHampers";
 import GourmetHampers from "./pages/GourmetHampers";
 import CorporateGifts from "./pages/CorporateGifts";
+import HomeEssentials from "./pages/HomeEssentials";
+import Accessories from "./pages/Accessories";
+import PartySupplies from "./pages/PartySupplies";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
@@ -51,6 +54,9 @@ const App = () => (
                 <Route path="/premium-hampers" element={<PremiumHampers />} />
                 <Route path="/gourmet" element={<GourmetHampers />} />
                 <Route path="/corporate" element={<CorporateGifts />} />
+                <Route path="/home-essentials" element={<HomeEssentials />} />
+                <Route path="/accessories" element={<Accessories />} />
+                <Route path="/party-supplies" element={<PartySupplies />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/profile" element={<Profile />} />
