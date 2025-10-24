@@ -8,19 +8,89 @@ import { useProducts } from "@/hooks/useProducts";
 
 const Index = () => {
   const { data: allProducts = [] } = useProducts();
-  
+
+  // Filter products by category
   const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
   const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
 
-  // ✅ Correct WhatsApp link syntax
-  const phoneNumber = "918447717322"; // country code included
+  // WhatsApp link
+  const phoneNumber = "918447717322";
   const message = "Hi! I'd like to place an order from The Gifting Studio.";
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  // Category cards data
+  const categories = [
+    {
+      title: "Festive Gifts",
+      description: "Celebrate traditions with joy",
+      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600",
+      link: "/festive",
+      gradient: "bg-gradient-to-br from-rose-pink/20 to-sunshine-yellow/20",
+    },
+    {
+      title: "Wedding Gifts",
+      description: "Bless their new beginning",
+      image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600",
+      link: "/wedding",
+      gradient: "bg-gradient-to-br from-lavender/20 to-mint-green/20",
+    },
+    {
+      title: "Personalised Gifts",
+      description: "Make it uniquely theirs",
+      image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600",
+      link: "/personalised",
+      gradient: "bg-gradient-to-br from-mint-green/20 to-lavender/20",
+    },
+    {
+      title: "Birthday Gifts",
+      description: "Celebrate another wonderful year",
+      image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=600",
+      link: "/birthday",
+      gradient: "bg-gradient-to-br from-sunshine-yellow/20 to-rose-pink/20",
+    },
+    // Anniversary Gifts will be repeated
+    {
+      title: "Anniversary Gifts",
+      description: "Honor love that lasts",
+      image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600",
+      link: "/anniversary",
+      gradient: "bg-gradient-to-br from-rose-pink/20 to-lavender/20",
+      
+    },
+    {
+      title: "Corporate Gifts",
+      description: "Appreciate your team",
+      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600",
+      link: "/corporate",
+      gradient: "bg-gradient-to-br from-sky-400/20 to-indigo-400/20",
+    },
+    {
+      title: "Home Essentials",
+      description: "Make your home special",
+      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600",
+      link: "/home-essentials",
+      gradient: "bg-gradient-to-br from-green-200/20 to-yellow-200/20",
+    },
+    {
+      title: "Accessories",
+      description: "Add a special touch",
+      image: "https://unsplash.com/photos/map-npPZxI5Gkxs",
+      link: "/accessories",
+      gradient: "bg-gradient-to-br from-purple-200/20 to-pink-200/20",
+    },
+    {
+      title: "Hampers",
+      description: "Curated gift boxes",
+      image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=600",
+      link: "/hampers",
+      gradient: "bg-gradient-to-br from-orange-200/20 to-red-200/20",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-primary py-20 px-4">
         <div className="container mx-auto text-center text-primary-foreground">
@@ -46,10 +116,10 @@ const Index = () => {
             <Button
               size="lg"
               variant="secondary"
-              className="shadow-hover text-green-600" // WhatsApp green
+              className="shadow-hover text-green-600"
               asChild
             >
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Order on WhatsApp
               </a>
@@ -65,41 +135,9 @@ const Index = () => {
           <p className="text-muted-foreground">Find the perfect gift for every special moment</p>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <CategorySection
-            title="Festive Gifts"
-            description="Celebrate traditions with joy"
-            image="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600"
-            link="/festive"
-            gradient="bg-gradient-to-br from-rose-pink/20 to-sunshine-yellow/20"
-          />
-          <CategorySection
-            title="Wedding Gifts"
-            description="Bless their new beginning"
-            image="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600"
-            link="/wedding"
-            gradient="bg-gradient-to-br from-lavender/20 to-mint-green/20"
-          />
-          <CategorySection
-            title="Personalised Gifts"
-            description="Make it uniquely theirs"
-            image="https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600"
-            link="/personalised"
-            gradient="bg-gradient-to-br from-mint-green/20 to-lavender/20"
-          />
-          <CategorySection
-            title="Birthday Gifts"
-            description="Celebrate another wonderful year"
-            image="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=600"
-            link="/birthday"
-            gradient="bg-gradient-to-br from-sunshine-yellow/20 to-rose-pink/20"
-          />
-          <CategorySection
-            title="Anniversary Gifts"
-            description="Honor love that lasts"
-            image="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600"
-            link="/anniversary"
-            gradient="bg-gradient-to-br from-rose-pink/20 to-lavender/20"
-          />
+          {categories.map((cat, index) => {
+            return <CategorySection key={index} {...cat} />;
+          })}
         </div>
       </section>
 
@@ -115,11 +153,11 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {festiveProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
+              <ProductCard
+                key={product.id}
                 id={product.id}
                 name={product.name}
-                price={Number(product.price)}
+                price={Number(product.price) || 0}
                 image={product.image}
                 category={product.category}
               />
@@ -140,11 +178,11 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {birthdayProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
+              <ProductCard
+                key={product.id}
                 id={product.id}
                 name={product.name}
-                price={Number(product.price)}
+                price={Number(product.price) || 0}
                 image={product.image}
                 category={product.category}
               />
