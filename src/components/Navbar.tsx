@@ -144,11 +144,11 @@ export const Navbar = () => {
               </>
             ) : (
               <Link to="/auth">
-                <Button variant="outline" size="sm">Sign In</Button>
+                <Button variant="accent" size="sm">Sign In</Button>
               </Link>
             )}
             <Link to="/contact">
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+              <Button variant="accent" size="sm" className="hidden sm:inline-flex">
                 Contact Us
               </Button>
             </Link>
