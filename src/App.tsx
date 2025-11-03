@@ -15,6 +15,7 @@ import BirthdayGifts from "./pages/BirthdayGifts";
 import AnniversaryGifts from "./pages/AnniversaryGifts";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import PremiumHampers from "./pages/PremiumHampers";
 import GourmetHampers from "./pages/GourmetHampers";
 import CorporateGifts from "./pages/CorporateGifts";
@@ -46,6 +47,7 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/festive" element={<FestiveGifts />} />
                 <Route path="/wedding" element={<WeddingGifts />} />
                 <Route path="/personalised" element={<PersonalisedGifts />} />
