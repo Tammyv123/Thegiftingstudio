@@ -28,6 +28,14 @@ export const Chatbot = () => {
     setLoading(true);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast.error("Please sign in to use the chatbot");
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke("chat", {
         body: { message: input }
       });
