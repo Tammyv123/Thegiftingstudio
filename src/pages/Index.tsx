@@ -6,19 +6,56 @@ import { Button } from "@/components/ui/button";
 import { Gift, Sparkles, Heart, MessageCircle } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
 import giftsHeroBanner from "@/assets/banners/gifts-hero.jpg";
+
+// Carousel Banner Images
+import weddingBanner from "@/assets/banners/wedding.jpg";
+import newYearBanner from "@/assets/banners/new-year.jpg";
+import christmasBanner from "@/assets/banners/christmas.jpg";
+import birthdayBanner from "@/assets/banners/birthday.jpg";
+
+// Individual Section Banner Images (Used later in the page)
 import festiveBanner from "@/assets/banners/festive-banner.jpg";
-import birthdayBanner from "@/assets/banners/birthday-banner.jpg";
-import weddingBanner from "@/assets/banners/wedding-banner.jpg";
 import personalisedBanner from "@/assets/banners/personalised-banner.jpg";
 import hampersBanner from "@/assets/banners/hampers-banner.jpg";
 import homeEssentialsBanner from "@/assets/banners/home-essentials-banner.jpg";
 import accessoriesBanner from "@/assets/banners/accessories-banner.jpg";
 import partySuppliesBanner from "@/assets/banners/party-supplies-banner.jpg";
 
+// Import the new ImageCarousel component
+import { ImageCarousel } from "@/components/ImageCarousel"; 
+
+// Define the data for the ImageCarousel
+const carouselBanners = [
+  {
+    image: weddingBanner,
+    title: "This Wedding Season",
+    subtitle: "Find the perfect gift to bless their journey.",
+    link: "/wedding",
+  },
+  {
+    image: christmasBanner,
+    title: "Merry Christmas Cheer",
+    subtitle: "Wonderful gifts to spread joy this festive season.",
+    link: "/festive",
+  },
+  {
+    image: newYearBanner,
+    title: "Celebrate New Beginnings",
+    subtitle: "Start the year fresh with thoughtful new year gifts.",
+    link: "/products",
+  },
+  {
+    image: birthdayBanner,
+    title: "Make a Birthday Smile",
+    subtitle: "Handpicked gifts for the ultimate surprise.",
+    link: "/birthday",
+  },
+];
+
 const Index = () => {
   const { data: allProducts = [] } = useProducts();
 
-  // Filter products by category
+  // Filter products by category (existing logic)
   const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
   const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
   const weddingProducts = allProducts.filter(p => p.category === "Wedding").slice(0, 4);
@@ -33,7 +70,7 @@ const Index = () => {
   const message = "Hi! I'd like to place an order from The Gifting Studio.";
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-  // Category cards data
+  // Category cards data (existing logic)
   const categories = [
     {
       title: "Festive Gifts",
@@ -63,14 +100,12 @@ const Index = () => {
       link: "/birthday",
       gradient: "bg-gradient-to-br from-sunshine-yellow/20 to-rose-pink/20",
     },
-    // Anniversary Gifts will be repeated
     {
       title: "Anniversary Gifts",
       description: "Honor love that lasts",
       image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600",
       link: "/anniversary",
       gradient: "bg-gradient-to-br from-rose-pink/20 to-lavender/20",
-      
     },
     {
       title: "Corporate Gifts",
@@ -106,14 +141,13 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
 
-      {/* Hero Banner */}
-      <section className="relative overflow-hidden">
-        <img src={giftsHeroBanner} alt="Gifts That Make Hearts Smile" className="w-full h-[400px] object-cover" />
-      </section>
-
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-primary py-20 px-4">
-        <div className="container mx-auto text-center text-primary-foreground">
+      {/* Hero Section - Combined Image Background */}
+      <section 
+        className="relative overflow-hidden h-[500px] flex items-center justify-center text-center px-4"
+        style={{ backgroundImage: `url(${giftsHeroBanner})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <div className="absolute inset-0 bg-black/40" /> {/* Dark overlay for readability */}
+        <div className="relative container mx-auto text-primary-foreground">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-sm">
             <Sparkles className="h-4 w-4" />
             <span className="text-sm font-medium">India's Premium Gifting Destination</span>
@@ -148,7 +182,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Category Cards */}
+      {/* NEW: Full-Width Image Carousel (Hot Offers) - Added container for padding/separation */}
+      <section className="container mx-auto px-4 pt-8">
+        <ImageCarousel items={carouselBanners} interval={6000} /> 
+      </section>
+
+      {/* Category Cards / Shop by Occasion */}
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12 text-center">
           <h2 className="mb-3 text-4xl font-bold">Shop by Occasion</h2>
@@ -193,7 +232,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Birthday Banner */}
+      {/* Birthday Banner (Original section - KEPT) */}
       <section className="relative overflow-hidden">
         <img src={birthdayBanner} alt="Birthday Specials" className="w-full h-[300px] object-cover" />
       </section>
@@ -225,7 +264,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Wedding Banner */}
+      {/* Wedding Banner (Original section - KEPT) */}
       <section className="relative overflow-hidden">
         <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-[300px] object-cover" />
       </section>
@@ -425,8 +464,8 @@ const Index = () => {
           <p className="mx-auto mb-8 max-w-2xl text-lg opacity-95">
             Join thousands of happy customers who trust us to make their celebrations special
           </p>
-          <Button size="lg" variant="secondary" className="shadow-hover">
-            Start Shopping
+          <Button size="lg" variant="secondary" className="shadow-hover" asChild>
+            <Link to="/products">Start Shopping</Link>
           </Button>
         </div>
       </section>
