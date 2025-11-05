@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { CategorySection } from "@/components/CategorySection";
-import { ProductCard } from "@/components/ProductCard";
+// Ensure this component is correctly imported and available
+import { ShopifyProductCard } from "@/components/ShopifyProductCard"; 
 import { Button } from "@/components/ui/button";
 import { Gift, Sparkles, Heart, MessageCircle } from "lucide-react";
-import { useProducts } from "@/hooks/useProducts";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import giftsHeroBanner from "@/assets/banners/gifts-hero.jpg";
 
 // Carousel Banner Images
@@ -53,17 +54,21 @@ const carouselBanners = [
 ];
 
 const Index = () => {
-  const { data: allProducts = [] } = useProducts();
+  const { data: allProducts = [] } = useShopifyProducts();
 
-  // Filter products by category (existing logic)
-  const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
-  const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
-  const weddingProducts = allProducts.filter(p => p.category === "Wedding").slice(0, 4);
-  const personalisedProducts = allProducts.filter(p => p.category === "Personalised").slice(0, 4);
-  const hampersProducts = allProducts.filter(p => p.category === "Premium Hampers").slice(0, 4);
-  const homeProducts = allProducts.filter(p => p.category === "Home Essentials").slice(0, 4);
-  const accessoriesProducts = allProducts.filter(p => p.category === "Accessories").slice(0, 4);
-  const partyProducts = allProducts.filter(p => p.category === "Party Supplies").slice(0, 4);
+  // FIX: Updated filtering to use p.node.category, consistent with the Shopify structure seen in pages/Products.tsx
+  const festiveProducts = allProducts.filter(p => p.node.category === "Festive").slice(0, 4);
+  const birthdayProducts = allProducts.filter(p => p.node.category === "Birthday").slice(0, 4);
+  const weddingProducts = allProducts.filter(p => p.node.category === "Wedding").slice(0, 4);
+  const personalisedProducts = allProducts.filter(p => p.node.category === "Personalised").slice(0, 4);
+  const hampersProducts = allProducts.filter(p => p.node.category === "Premium Hampers").slice(0, 4);
+  const homeProducts = allProducts.filter(p => p.node.category === "Home Essentials").slice(0, 4);
+  const accessoriesProducts = allProducts.filter(p => p.node.category === "Accessories").slice(0, 4);
+  const partyProducts = allProducts.filter(p => p.node.category === "Party Supplies").slice(0, 4);
+
+  // General products for the main 'Featured Products' section
+  const displayProducts = allProducts.slice(0, 8);
+
 
   // WhatsApp link
   const phoneNumber = "918447717322";
@@ -200,9 +205,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Festive Banner */}
+      {/* Featured Products Banner */}
       <section className="relative overflow-hidden">
-        <img src={festiveBanner} alt="Festival Essentials" className="w-full h-[300px] object-cover" />
+        <img src={giftsHeroBanner} alt="Featured Products" className="w-full h-[300px] object-cover" />
       </section>
 
       {/* Festival Essentials */}
@@ -219,20 +224,17 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {festiveProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
+              // FIX: Use product.node.id for key and pass product directly
+              <ShopifyProductCard
+                key={product.node.id}
+                product={product} 
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Birthday Banner (Original section - KEPT) */}
+      {/* Birthday Banner */}
       <section className="relative overflow-hidden">
         <img src={birthdayBanner} alt="Birthday Specials" className="w-full h-[300px] object-cover" />
       </section>
@@ -242,8 +244,8 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12 flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold">Birthday Specials</h2>
-              <p className="text-muted-foreground">Make their day unforgettable</p>
+              <h2 className="text-3xl font-bold">Birthday Gifts</h2>
+              <p className="text-muted-foreground">Curated for the perfect surprise</p>
             </div>
             <Button variant="outline" asChild>
               <Link to="/birthday">View All</Link>
@@ -251,20 +253,17 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {birthdayProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
+              // FIX: Use product.node.id for key and pass product directly
+              <ShopifyProductCard
+                key={product.node.id}
+                product={product}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Wedding Banner (Original section - KEPT) */}
+      {/* Wedding Banner */}
       <section className="relative overflow-hidden">
         <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-[300px] object-cover" />
       </section>
@@ -283,176 +282,54 @@ const Index = () => {
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {weddingProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
+              // FIX: Use product.node.id for key and pass product directly
+              <ShopifyProductCard
+                key={product.node.id}
+                product={product}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Personalised Banner */}
-      <section className="relative overflow-hidden">
-        <img src={personalisedBanner} alt="Personalised Gifts" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Personalised Gifts */}
+      {/* Featured Products (General fallback/showcase) */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Personalised Gifts</h2>
-              <p className="text-muted-foreground">Make it uniquely theirs</p>
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
+            <p className="text-muted-foreground">Discover our curated collection of gifts</p>
+          </div>
+          
+          {displayProducts.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground mb-4">No products available yet</p>
+              <p className="text-sm text-muted-foreground">
+                Create your first product by telling me what you want to sell!
+              </p>
+              {/* Added View All Button for the empty state fallback */}
+              <Button variant="accent" size="lg" asChild className="mt-4">
+                <Link to="/products">View All Products</Link>
+              </Button>
             </div>
-            <Button variant="outline" asChild>
-              <Link to="/personalised">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {personalisedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Hampers Banner */}
-      <section className="relative overflow-hidden">
-        <img src={hampersBanner} alt="Premium Hampers" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Premium Hampers */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Premium Hampers</h2>
-              <p className="text-muted-foreground">Curated luxury gift boxes</p>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {displayProducts.map((product) => (
+                <ShopifyProductCard
+                  key={product.node.id}
+                  product={product}
+                />
+              ))}
             </div>
-            <Button variant="outline" asChild>
-              <Link to="/premium-hampers">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {hampersProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Home Essentials Banner */}
-      <section className="relative overflow-hidden">
-        <img src={homeEssentialsBanner} alt="Home Essentials" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Home Essentials */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Home Essentials</h2>
-              <p className="text-muted-foreground">Make your home special</p>
+          )}
+          
+          {/* Main View All Button (kept at the end of the section) */}
+          {displayProducts.length > 0 && (
+            <div className="mt-12 text-center">
+              <Button variant="accent" size="lg" asChild>
+                <Link to="/products">View All Products</Link>
+              </Button>
             </div>
-            <Button variant="outline" asChild>
-              <Link to="/home-essentials">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {homeProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Accessories Banner */}
-      <section className="relative overflow-hidden">
-        <img src={accessoriesBanner} alt="Accessories" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Accessories */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Accessories</h2>
-              <p className="text-muted-foreground">Add a special touch</p>
-            </div>
-            <Button variant="outline" asChild>
-              <Link to="/accessories">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {accessoriesProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Party Supplies Banner */}
-      <section className="relative overflow-hidden">
-        <img src={partySuppliesBanner} alt="Party Supplies" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Party Supplies */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Party Supplies</h2>
-              <p className="text-muted-foreground">Celebrate in style</p>
-            </div>
-            <Button variant="outline" asChild>
-              <Link to="/party-supplies">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {partyProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price) || 0}
-                image={product.image}
-                category={product.category}
-              />
-            ))}
-          </div>
+          )}
         </div>
       </section>
 

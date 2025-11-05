@@ -1,14 +1,9 @@
-import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
-import { ProductCard } from "@/components/ProductCard";
-import { ProductFilters } from "@/components/ProductFilters";
-import { useProducts } from "@/hooks/useProducts";
-import { useSortedProducts } from "@/hooks/useSortedProducts";
+import { ShopifyProductCard } from "@/components/ShopifyProductCard";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 const Products = () => {
-  const { data: products = [], isLoading } = useProducts();
-  const [sortBy, setSortBy] = useState("default");
-  const sortedProducts = useSortedProducts(products, sortBy);
+  const { data: products = [], isLoading } = useShopifyProducts();
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -17,14 +12,8 @@ const Products = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-3 text-4xl font-bold">All Products</h1>
-          <p className="text-muted-foreground">Browse our complete collection of gifts</p>
+          <p className="text-muted-foreground">Browse our complete collection of gifts from Shopify</p>
         </div>
-
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
 
         {isLoading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -32,18 +21,19 @@ const Products = () => {
               <div key={i} className="h-80 animate-pulse rounded-lg bg-muted" />
             ))}
           </div>
-        ) : sortedProducts.length === 0 ? (
-          <p className="text-center text-muted-foreground">No products available</p>
+        ) : products.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground mb-4">No products found</p>
+            <p className="text-sm text-muted-foreground">
+              Create your first product by telling me what you want to sell!
+            </p>
+          </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {sortedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={Number(product.price)}
-                image={product.image}
-                category={product.category}
+            {products.map((product) => (
+              <ShopifyProductCard
+                key={product.node.id}
+                product={product}
               />
             ))}
           </div>

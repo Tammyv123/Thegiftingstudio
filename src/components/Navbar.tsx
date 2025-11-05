@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const categories = [
   { name: "Festive Gifts", path: "/festive" },
@@ -41,7 +41,6 @@ const categoryNav = [
 
 export const Navbar = () => {
   const { user, signOut } = useAuth();
-  const { cartItems } = useCart();
   const { wishlistItems } = useWishlist();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,16 +120,7 @@ export const Navbar = () => {
                 )}
               </Button>
             </Link>
-            <Link to="/cart">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                {cartItems.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItems.length}
-                  </span>
-                )}
-              </Button>
-            </Link>
+            <CartDrawer />
             {user ? (
               <>
                 <Link to="/profile">
@@ -144,11 +134,11 @@ export const Navbar = () => {
               </>
             ) : (
               <Link to="/auth">
-                <Button variant="outline" size="sm">Sign In</Button>
+                <Button variant="accent" size="sm">Sign In</Button>
               </Link>
             )}
             <Link to="/contact">
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+              <Button variant="accent" size="sm" className="hidden sm:inline-flex">
                 Contact Us
               </Button>
             </Link>
