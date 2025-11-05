@@ -205,51 +205,175 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Products Banner */}
-      <section className="relative overflow-hidden">
-        <img src={giftsHeroBanner} alt="Featured Products" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Featured Products (General fallback/showcase) - This is the primary product display */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
-            <p className="text-muted-foreground">Discover our curated collection of gifts</p>
-          </div>
-          
-          {displayProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground mb-4">No products available yet</p>
-              <p className="text-sm text-muted-foreground">
-                Create your first product by telling me what you want to sell!
-              </p>
-              {/* Added View All Button for the empty state fallback */}
-              <Button variant="accent" size="lg" asChild className="mt-4">
-                <Link to="/products">View All Products</Link>
-              </Button>
+      {/* Category Product Sections with Banners */}
+      
+      {/* Festive Gifts */}
+      {festiveProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={festiveBanner} alt="Festive Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Festive Gifts</h2>
             </div>
-          ) : (
+          </div>
+          <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {displayProducts.map((product) => (
-                <ShopifyProductCard
-                  key={product.node.id}
-                  product={product}
-                />
+              {festiveProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
               ))}
             </div>
-          )}
-          
-          {/* Main View All Button (kept at the end of the section) */}
-          {displayProducts.length > 0 && (
-            <div className="mt-12 text-center">
-              <Button variant="accent" size="lg" asChild>
-                <Link to="/products">View All Products</Link>
-              </Button>
+          </div>
+        </section>
+      )}
+
+      {/* Birthday Gifts */}
+      {birthdayProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={birthdayBanner} alt="Birthday Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Birthday Gifts</h2>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {birthdayProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Wedding Gifts */}
+      {weddingProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Wedding Gifts</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {weddingProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Personalised Gifts */}
+      {personalisedProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={personalisedBanner} alt="Personalised Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Personalised Gifts</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {personalisedProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Premium Hampers */}
+      {hampersProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={hampersBanner} alt="Premium Hampers" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Premium Hampers</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {hampersProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Home Essentials */}
+      {homeProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={homeEssentialsBanner} alt="Home Essentials" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Home Essentials</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {homeProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Accessories */}
+      {accessoriesProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={accessoriesBanner} alt="Accessories" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Accessories</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {accessoriesProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Party Supplies */}
+      {partyProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src={partySuppliesBanner} alt="Party Supplies" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Party Supplies</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {partyProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Banner */}
       <section className="bg-gradient-primary py-16 text-primary-foreground">
