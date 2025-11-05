@@ -56,15 +56,15 @@ const carouselBanners = [
 const Index = () => {
   const { data: allProducts = [] } = useShopifyProducts();
 
-  // FIX: Updated filtering to use p.node.category, consistent with the Shopify structure seen in pages/Products.tsx
-  const festiveProducts = allProducts.filter(p => p.node.category === "Festive").slice(0, 4);
-  const birthdayProducts = allProducts.filter(p => p.node.category === "Birthday").slice(0, 4);
-  const weddingProducts = allProducts.filter(p => p.node.category === "Wedding").slice(0, 4);
-  const personalisedProducts = allProducts.filter(p => p.node.category === "Personalised").slice(0, 4);
-  const hampersProducts = allProducts.filter(p => p.node.category === "Premium Hampers").slice(0, 4);
-  const homeProducts = allProducts.filter(p => p.node.category === "Home Essentials").slice(0, 4);
-  const accessoriesProducts = allProducts.filter(p => p.node.category === "Accessories").slice(0, 4);
-  const partyProducts = allProducts.filter(p => p.node.category === "Party Supplies").slice(0, 4);
+  // FIX: Updated filtering to check if the product's tags include the category name. 
+  const festiveProducts = allProducts.filter(p => p.node.tags?.includes("Festive")).slice(0, 4);
+  const birthdayProducts = allProducts.filter(p => p.node.tags?.includes("Birthday")).slice(0, 4);
+  const weddingProducts = allProducts.filter(p => p.node.tags?.includes("Wedding")).slice(0, 4);
+  const personalisedProducts = allProducts.filter(p => p.node.tags?.includes("Personalised")).slice(0, 4);
+  const hampersProducts = allProducts.filter(p => p.node.tags?.includes("Premium Hampers")).slice(0, 4);
+  const homeProducts = allProducts.filter(p => p.node.tags?.includes("Home Essentials")).slice(0, 4);
+  const accessoriesProducts = allProducts.filter(p => p.node.tags?.includes("Accessories")).slice(0, 4);
+  const partyProducts = allProducts.filter(p => p.node.tags?.includes("Party Supplies")).slice(0, 4);
 
   // General products for the main 'Featured Products' section
   const displayProducts = allProducts.slice(0, 8);
@@ -210,89 +210,7 @@ const Index = () => {
         <img src={giftsHeroBanner} alt="Featured Products" className="w-full h-[300px] object-cover" />
       </section>
 
-      {/* Festival Essentials */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Festival Essentials</h2>
-              <p className="text-muted-foreground">Trending gifts for the season</p>
-            </div>
-            <Button variant="outline" asChild>
-              <Link to="/festive">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {festiveProducts.map((product) => (
-              // FIX: Use product.node.id for key and pass product directly
-              <ShopifyProductCard
-                key={product.node.id}
-                product={product} 
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Birthday Banner */}
-      <section className="relative overflow-hidden">
-        <img src={birthdayBanner} alt="Birthday Specials" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Birthday Gifts Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Birthday Gifts</h2>
-              <p className="text-muted-foreground">Curated for the perfect surprise</p>
-            </div>
-            <Button variant="outline" asChild>
-              <Link to="/birthday">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {birthdayProducts.map((product) => (
-              // FIX: Use product.node.id for key and pass product directly
-              <ShopifyProductCard
-                key={product.node.id}
-                product={product}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Wedding Banner */}
-      <section className="relative overflow-hidden">
-        <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-[300px] object-cover" />
-      </section>
-
-      {/* Wedding Gifts */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">Wedding Gifts</h2>
-              <p className="text-muted-foreground">Bless their new beginning</p>
-            </div>
-            <Button variant="outline" asChild>
-              <Link to="/wedding">View All</Link>
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {weddingProducts.map((product) => (
-              // FIX: Use product.node.id for key and pass product directly
-              <ShopifyProductCard
-                key={product.node.id}
-                product={product}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products (General fallback/showcase) */}
+      {/* Featured Products (General fallback/showcase) - This is the primary product display */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
