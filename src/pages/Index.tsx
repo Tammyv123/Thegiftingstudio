@@ -209,20 +209,20 @@ const Index = () => {
 
       {/* Category Product Sections with Banners */}
       
-      {/* Festive Gifts */}
-      {festiveProducts.length > 0 && (
+      {/* Wedding Gifts */}
+      {weddingProducts.length > 0 && (
         <section className="py-8">
           <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
-            <img src={festiveBanner} alt="Festive Gifts" className="w-full h-full object-cover" />
+            <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative text-center text-primary-foreground">
               <p className="text-lg mb-2">The Gifting Studio</p>
-              <h2 className="text-4xl font-bold">Festive Gifts</h2>
+              <h2 className="text-4xl font-bold">Wedding Gifts</h2>
             </div>
           </div>
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {festiveProducts.map((product) => (
+              {weddingProducts.map((product) => (
                 <ShopifyProductCard key={product.node.id} product={product} />
               ))}
             </div>
@@ -251,20 +251,20 @@ const Index = () => {
         </section>
       )}
 
-      {/* Wedding Gifts */}
-      {weddingProducts.length > 0 && (
+      {/* Anniversary Gifts */}
+      {anniversaryProducts.length > 0 && (
         <section className="py-8">
           <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
-            <img src={weddingBanner} alt="Wedding Gifts" className="w-full h-full object-cover" />
+            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1200" alt="Anniversary Gifts" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative text-center text-primary-foreground">
               <p className="text-lg mb-2">The Gifting Studio</p>
-              <h2 className="text-4xl font-bold">Wedding Gifts</h2>
+              <h2 className="text-4xl font-bold">Anniversary Gifts</h2>
             </div>
           </div>
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {weddingProducts.map((product) => (
+              {anniversaryProducts.map((product) => (
                 <ShopifyProductCard key={product.node.id} product={product} />
               ))}
             </div>
@@ -377,47 +377,6 @@ const Index = () => {
         </section>
       )}
 
-      {/* Anniversary Gifts */}
-      {anniversaryProducts.length > 0 && (
-        <section className="py-8">
-          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
-            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1200" alt="Anniversary Gifts" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="relative text-center text-primary-foreground">
-              <p className="text-lg mb-2">The Gifting Studio</p>
-              <h2 className="text-4xl font-bold">Anniversary Gifts</h2>
-            </div>
-          </div>
-          <div className="container mx-auto px-4">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {anniversaryProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Corporate Gifts */}
-      {corporateProducts.length > 0 && (
-        <section className="py-8">
-          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
-            <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200" alt="Corporate Gifts" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="relative text-center text-primary-foreground">
-              <p className="text-lg mb-2">The Gifting Studio</p>
-              <h2 className="text-4xl font-bold">Corporate Gifts</h2>
-            </div>
-          </div>
-          <div className="container mx-auto px-4">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {corporateProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* CTA Banner */}
       <section className="bg-gradient-primary py-16 text-primary-foreground">
