@@ -61,6 +61,8 @@ const Index = () => {
   const birthdayProducts = allProducts.filter(p => p.node.tags?.includes("Birthday")).slice(0, 4);
   const weddingProducts = allProducts.filter(p => p.node.tags?.includes("Wedding")).slice(0, 4);
   const personalisedProducts = allProducts.filter(p => p.node.tags?.includes("Personalised")).slice(0, 4);
+  const anniversaryProducts = allProducts.filter(p => p.node.tags?.includes("Anniversary")).slice(0, 4);
+  const corporateProducts = allProducts.filter(p => p.node.tags?.includes("Corporate")).slice(0, 4);
   const hampersProducts = allProducts.filter(p => p.node.tags?.includes("Premium Hampers")).slice(0, 4);
   const homeProducts = allProducts.filter(p => p.node.tags?.includes("Home Essentials")).slice(0, 4);
   const accessoriesProducts = allProducts.filter(p => p.node.tags?.includes("Accessories")).slice(0, 4);
@@ -368,6 +370,48 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {partyProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Anniversary Gifts */}
+      {anniversaryProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1200" alt="Anniversary Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Anniversary Gifts</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {anniversaryProducts.map((product) => (
+                <ShopifyProductCard key={product.node.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Corporate Gifts */}
+      {corporateProducts.length > 0 && (
+        <section className="py-8">
+          <div className="relative overflow-hidden h-[300px] flex items-center justify-center mb-8">
+            <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200" alt="Corporate Gifts" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative text-center text-primary-foreground">
+              <p className="text-lg mb-2">The Gifting Studio</p>
+              <h2 className="text-4xl font-bold">Corporate Gifts</h2>
+            </div>
+          </div>
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {corporateProducts.map((product) => (
                 <ShopifyProductCard key={product.node.id} product={product} />
               ))}
             </div>
