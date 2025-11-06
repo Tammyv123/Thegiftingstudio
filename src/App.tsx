@@ -29,6 +29,7 @@ import Contact from "./pages/Contact";
 import Search from "./pages/Search";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
+import AdminPortal from "./pages/AdminPortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -65,6 +66,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/admin" element={<AdminPortal />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Chatbot />
