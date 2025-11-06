@@ -145,14 +145,6 @@ export const Navbar = () => {
             <CartDrawer />
             {user ? (
               <>
-                {isAdmin && (
-                  <Link to="/admin">
-                    <Button variant="accent" size="sm" className="gap-2">
-                      <Plus className="h-4 w-4" />
-                      <span className="hidden sm:inline">Add Product</span>
-                    </Button>
-                  </Link>
-                )}
                 <Link to="/profile">
                   <Button variant="ghost" size="icon">
                     <User className="h-5 w-5" />
@@ -165,6 +157,14 @@ export const Navbar = () => {
             ) : (
               <Link to="/auth">
                 <Button variant="accent" size="sm">Sign In</Button>
+              </Link>
+            )}
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="accent" size="sm" className="gap-2 hidden sm:inline-flex">
+                  <Plus className="h-4 w-4" />
+                  Add Product
+                </Button>
               </Link>
             )}
             <Link to="/contact">
