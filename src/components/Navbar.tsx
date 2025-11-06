@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Menu, Heart, ShoppingCart, User, LogOut, Search, 
   Gift, Sparkles, Award, Flame, Package, Briefcase, 
   Home, Cake, PartyPopper, Flower2, BookHeart, UtensilsCrossed, 
-  LampDesk, Watch, ShoppingBag
+  LampDesk, Watch, ShoppingBag, Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { CartDrawer } from "@/components/CartDrawer";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = [
   { name: "Festive Gifts", path: "/festive" },
@@ -44,7 +45,28 @@ export const Navbar = () => {
   const { wishlistItems } = useWishlist();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .single();
+
+      setIsAdmin(!!data);
+    };
+
+    checkAdminStatus();
+  }, [user]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,6 +145,14 @@ export const Navbar = () => {
             <CartDrawer />
             {user ? (
               <>
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="accent" size="sm" className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      <span className="hidden sm:inline">Add Product</span>
+                    </Button>
+                  </Link>
+                )}
                 <Link to="/profile">
                   <Button variant="ghost" size="icon">
                     <User className="h-5 w-5" />
