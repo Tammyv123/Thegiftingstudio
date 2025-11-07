@@ -127,8 +127,10 @@ export type Database = {
           id: string
           image: string | null
           images: string[] | null
+          low_stock_threshold: number | null
           name: string
           price: number
+          stock: number
           subcategory: string | null
         }
         Insert: {
@@ -139,8 +141,10 @@ export type Database = {
           id?: string
           image?: string | null
           images?: string[] | null
+          low_stock_threshold?: number | null
           name: string
           price: number
+          stock?: number
           subcategory?: string | null
         }
         Update: {
@@ -151,8 +155,10 @@ export type Database = {
           id?: string
           image?: string | null
           images?: string[] | null
+          low_stock_threshold?: number | null
           name?: string
           price?: number
+          stock?: number
           subcategory?: string | null
         }
         Relationships: []

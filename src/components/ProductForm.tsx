@@ -34,6 +34,8 @@ export const ProductForm = () => {
     description: "",
     price: "",
     colors: "",
+    stock: "",
+    lowStockThreshold: "10",
   });
   const [imageCount, setImageCount] = useState(1);
   const [images, setImages] = useState<File[]>([]);
@@ -76,7 +78,9 @@ export const ProductForm = () => {
           price: parseFloat(formData.price),
           colors: formData.colors.split(',').map(c => c.trim()).filter(c => c),
           images: imageUrls,
-          image: imageUrls[0] || null
+          image: imageUrls[0] || null,
+          stock: parseInt(formData.stock),
+          low_stock_threshold: parseInt(formData.lowStockThreshold)
         });
 
       if (insertError) throw insertError;
@@ -91,6 +95,8 @@ export const ProductForm = () => {
         description: "",
         price: "",
         colors: "",
+        stock: "",
+        lowStockThreshold: "10",
       });
       setImages([]);
       setImageCount(1);
@@ -176,6 +182,32 @@ export const ProductForm = () => {
           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
           required
         />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="stock">Stock Quantity</Label>
+          <Input
+            id="stock"
+            type="number"
+            min="0"
+            value={formData.stock}
+            onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="lowStockThreshold">Low Stock Alert</Label>
+          <Input
+            id="lowStockThreshold"
+            type="number"
+            min="0"
+            value={formData.lowStockThreshold}
+            onChange={(e) => setFormData({ ...formData, lowStockThreshold: e.target.value })}
+            required
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

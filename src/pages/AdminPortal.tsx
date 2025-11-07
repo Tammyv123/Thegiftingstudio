@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { ProductForm } from "@/components/ProductForm";
+import { InventoryManagement } from "@/components/InventoryManagement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -68,14 +70,36 @@ const AdminPortal = () => {
       <Navbar />
       
       <div className="container mx-auto px-4 py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-3xl">Admin Portal</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ProductForm />
-          </CardContent>
-        </Card>
+        <h1 className="text-3xl font-bold mb-6">Admin Portal</h1>
+        
+        <Tabs defaultValue="inventory" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="inventory">Inventory Management</TabsTrigger>
+            <TabsTrigger value="add-product">Add New Product</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="inventory">
+            <Card>
+              <CardHeader>
+                <CardTitle>Stock Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <InventoryManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="add-product">
+            <Card>
+              <CardHeader>
+                <CardTitle>Add New Product</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ProductForm />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

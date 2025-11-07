@@ -8,6 +8,8 @@ export interface Product {
   image: string;
   category: string;
   description?: string;
+  stock?: number;
+  low_stock_threshold?: number;
 }
 
 export const useProducts = (category?: string) => {
