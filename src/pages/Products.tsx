@@ -1,9 +1,9 @@
 import { Navbar } from "@/components/Navbar";
-import { ShopifyProductCard } from "@/components/ShopifyProductCard";
-import { useShopifyProducts } from "@/hooks/useShopifyProducts";
+import { ProductCard } from "@/components/ProductCard";
+import { useProducts } from "@/hooks/useProducts";
 
 const Products = () => {
-  const { data: products = [], isLoading } = useShopifyProducts();
+  const { data: products = [], isLoading } = useProducts();
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -12,7 +12,7 @@ const Products = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-3 text-4xl font-bold">All Products</h1>
-          <p className="text-muted-foreground">Browse our complete collection of gifts from Shopify</p>
+          <p className="text-muted-foreground">Browse our complete collection of gifts</p>
         </div>
 
         {isLoading ? (
@@ -31,9 +31,13 @@ const Products = () => {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
-              <ShopifyProductCard
-                key={product.node.id}
-                product={product}
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                price={Number(product.price)}
+                image={product.image}
+                category={product.category}
               />
             ))}
           </div>
