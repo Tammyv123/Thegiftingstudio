@@ -32,6 +32,35 @@ import Checkout from "./pages/Checkout";
 import AdminPortal from "./pages/AdminPortal";
 import NotFound from "./pages/NotFound";
 
+// Wedding subcategories
+import WeddingTray from "./pages/wedding/WeddingTray";
+import WeddingReturnFavour from "./pages/wedding/WeddingReturnFavour";
+import WeddingJewellery from "./pages/wedding/WeddingJewellery";
+import WeddingProps from "./pages/wedding/WeddingProps";
+import WeddingHampers from "./pages/wedding/WeddingHampers";
+import WeddingGift from "./pages/wedding/WeddingGift";
+
+// Birthday subcategories
+import GiftForHer from "./pages/birthday/GiftForHer";
+import GiftForHim from "./pages/birthday/GiftForHim";
+import GiftForSibling from "./pages/birthday/GiftForSibling";
+import GiftForMother from "./pages/birthday/GiftForMother";
+import GiftForFather from "./pages/birthday/GiftForFather";
+
+// Accessories subcategories
+import Earrings from "./pages/accessories/Earrings";
+import Hair from "./pages/accessories/Hair";
+import Necklace from "./pages/accessories/Necklace";
+import Hand from "./pages/accessories/Hand";
+
+// Festive subcategories
+import Diwali from "./pages/festive/Diwali";
+import Holi from "./pages/festive/Holi";
+import Eid from "./pages/festive/Eid";
+import Rakshabandhan from "./pages/festive/Rakshabandhan";
+import Christmas from "./pages/festive/Christmas";
+import NewYear from "./pages/festive/NewYear";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -60,6 +89,35 @@ const App = () => (
                 <Route path="/home-essentials" element={<HomeEssentials />} />
                 <Route path="/accessories" element={<Accessories />} />
                 <Route path="/party-supplies" element={<PartySupplies />} />
+                
+                {/* Wedding subcategory routes */}
+                <Route path="/wedding/tray" element={<WeddingTray />} />
+                <Route path="/wedding/return-favour" element={<WeddingReturnFavour />} />
+                <Route path="/wedding/jewellery" element={<WeddingJewellery />} />
+                <Route path="/wedding/props" element={<WeddingProps />} />
+                <Route path="/wedding/hampers" element={<WeddingHampers />} />
+                <Route path="/wedding/gift" element={<WeddingGift />} />
+                
+                {/* Birthday subcategory routes */}
+                <Route path="/birthday/gift-for-her" element={<GiftForHer />} />
+                <Route path="/birthday/gift-for-him" element={<GiftForHim />} />
+                <Route path="/birthday/gift-for-sibling" element={<GiftForSibling />} />
+                <Route path="/birthday/gift-for-mother" element={<GiftForMother />} />
+                <Route path="/birthday/gift-for-father" element={<GiftForFather />} />
+                
+                {/* Accessories subcategory routes */}
+                <Route path="/accessories/earrings" element={<Earrings />} />
+                <Route path="/accessories/hair" element={<Hair />} />
+                <Route path="/accessories/necklace" element={<Necklace />} />
+                <Route path="/accessories/hand" element={<Hand />} />
+                
+                {/* Festive subcategory routes */}
+                <Route path="/festive/diwali" element={<Diwali />} />
+                <Route path="/festive/holi" element={<Holi />} />
+                <Route path="/festive/eid" element={<Eid />} />
+                <Route path="/festive/rakshabandhan" element={<Rakshabandhan />} />
+                <Route path="/festive/christmas" element={<Christmas />} />
+                <Route path="/festive/new-year" element={<NewYear />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/profile" element={<Profile />} />
