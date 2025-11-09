@@ -11,7 +11,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { CartDrawer } from "@/components/CartDrawer";
+import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 
 const categories = [
@@ -43,6 +43,7 @@ const categoryNav = [
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const { wishlistItems } = useWishlist();
+  const { cartItems } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -142,7 +143,16 @@ export const Navbar = () => {
                 )}
               </Button>
             </Link>
-            <CartDrawer />
+            <Link to="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItems.length}
+                  </span>
+                )}
+              </Button>
+            </Link>
             {user ? (
               <>
                 <Link to="/profile">

@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { CategorySection } from "@/components/CategorySection";
-// Ensure this component is correctly imported and available
-import { ShopifyProductCard } from "@/components/ShopifyProductCard"; 
+import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Gift, Sparkles, Heart, MessageCircle } from "lucide-react";
-import { useShopifyProducts } from "@/hooks/useShopifyProducts";
+import { useProducts } from "@/hooks/useProducts";
 import giftsHeroBanner from "@/assets/banners/gifts-hero.jpg";
 
 // Carousel Banner Images
@@ -54,21 +53,19 @@ const carouselBanners = [
 ];
 
 const Index = () => {
-  const { data: allProducts = [] } = useShopifyProducts();
+  const { data: allProducts = [] } = useProducts();
 
-  // FIX: Updated filtering to check if the product's tags include the category name. 
-  const festiveProducts = allProducts.filter(p => p.node.tags?.includes("Festive")).slice(0, 4);
-  const birthdayProducts = allProducts.filter(p => p.node.tags?.includes("Birthday")).slice(0, 4);
-  const weddingProducts = allProducts.filter(p => p.node.tags?.includes("Wedding")).slice(0, 4);
-  const personalisedProducts = allProducts.filter(p => p.node.tags?.includes("Personalised")).slice(0, 4);
-  const anniversaryProducts = allProducts.filter(p => p.node.tags?.includes("Anniversary")).slice(0, 4);
-  const corporateProducts = allProducts.filter(p => p.node.tags?.includes("Corporate")).slice(0, 4);
-  const hampersProducts = allProducts.filter(p => p.node.tags?.includes("Premium Hampers")).slice(0, 4);
-  const homeProducts = allProducts.filter(p => p.node.tags?.includes("Home Essentials")).slice(0, 4);
-  const accessoriesProducts = allProducts.filter(p => p.node.tags?.includes("Accessories")).slice(0, 4);
-  const partyProducts = allProducts.filter(p => p.node.tags?.includes("Party Supplies")).slice(0, 4);
+  const festiveProducts = allProducts.filter(p => p.category === "Festive").slice(0, 4);
+  const birthdayProducts = allProducts.filter(p => p.category === "Birthday").slice(0, 4);
+  const weddingProducts = allProducts.filter(p => p.category === "Wedding").slice(0, 4);
+  const personalisedProducts = allProducts.filter(p => p.category === "Personalised").slice(0, 4);
+  const anniversaryProducts = allProducts.filter(p => p.category === "Anniversary").slice(0, 4);
+  const corporateProducts = allProducts.filter(p => p.category === "Corporate").slice(0, 4);
+  const hampersProducts = allProducts.filter(p => p.category === "Premium Hampers").slice(0, 4);
+  const homeProducts = allProducts.filter(p => p.category === "Home Essentials").slice(0, 4);
+  const accessoriesProducts = allProducts.filter(p => p.category === "Accessories").slice(0, 4);
+  const partyProducts = allProducts.filter(p => p.category === "Party Supplies").slice(0, 4);
 
-  // General products for the main 'Featured Products' section
   const displayProducts = allProducts.slice(0, 8);
 
 
@@ -223,7 +220,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {weddingProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -244,7 +248,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {birthdayProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -265,7 +276,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {anniversaryProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -286,7 +304,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {personalisedProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -307,7 +332,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {hampersProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -328,7 +360,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {homeProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -349,7 +388,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {accessoriesProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
@@ -370,7 +416,14 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {partyProducts.map((product) => (
-                <ShopifyProductCard key={product.node.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={Number(product.price)}
+                  image={product.image}
+                  category={product.category}
+                />
               ))}
             </div>
           </div>
