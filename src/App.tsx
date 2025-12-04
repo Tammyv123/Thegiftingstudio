@@ -59,6 +59,7 @@ import Eid from "./pages/festive/Eid";
 import Rakshabandhan from "./pages/festive/Rakshabandhan";
 import Christmas from "./pages/festive/Christmas";
 import NewYear from "./pages/festive/NewYear";
+import Lohri from "./pages/festive/Lohri";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +117,7 @@ const App = () => (
                 <Route path="/festive/rakshabandhan" element={<Rakshabandhan />} />
                 <Route path="/festive/christmas" element={<Christmas />} />
                 <Route path="/festive/new-year" element={<NewYear />} />
+                <Route path="/festive/lohri" element={<Lohri />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/profile" element={<Profile />} />
