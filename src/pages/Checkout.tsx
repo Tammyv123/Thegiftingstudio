@@ -12,6 +12,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Phone } from "lucide-react";
+import { z } from "zod";
+
+// Validation schema for checkout address
+const addressSchema = z.object({
+  fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  phone: z.string().regex(/^[0-9]{10}$/, "Phone must be exactly 10 digits"),
+  address: z.string().trim().min(10, "Address must be at least 10 characters").max(500, "Address must be less than 500 characters"),
+  city: z.string().trim().min(2, "City must be at least 2 characters").max(100, "City must be less than 100 characters"),
+  state: z.string().trim().min(2, "State must be at least 2 characters").max(100, "State must be less than 100 characters"),
+  pincode: z.string().regex(/^[0-9]{6}$/, "Pincode must be exactly 6 digits"),
+});
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -45,8 +56,10 @@ const Checkout = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!address.fullName || !address.phone || !address.address || !address.city || !address.state || !address.pincode) {
-      toast.error("Please fill in all address fields");
+    // Validate address with zod schema
+    const validationResult = addressSchema.safeParse(address);
+    if (!validationResult.success) {
+      toast.error(validationResult.error.errors[0].message);
       return;
     }
 
@@ -127,6 +140,7 @@ const Checkout = () => {
                         id="fullName"
                         value={address.fullName}
                         onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -136,7 +150,9 @@ const Checkout = () => {
                         id="phone"
                         type="tel"
                         value={address.phone}
-                        onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                        onChange={(e) => setAddress({ ...address, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                        maxLength={10}
+                        placeholder="10-digit phone number"
                         required
                       />
                     </div>
@@ -148,6 +164,7 @@ const Checkout = () => {
                       id="address"
                       value={address.address}
                       onChange={(e) => setAddress({ ...address, address: e.target.value })}
+                      maxLength={500}
                       required
                     />
                   </div>
@@ -159,6 +176,7 @@ const Checkout = () => {
                         id="city"
                         value={address.city}
                         onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -168,6 +186,7 @@ const Checkout = () => {
                         id="state"
                         value={address.state}
                         onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -176,7 +195,9 @@ const Checkout = () => {
                       <Input
                         id="pincode"
                         value={address.pincode}
-                        onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
+                        onChange={(e) => setAddress({ ...address, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) })}
+                        maxLength={6}
+                        placeholder="6-digit pincode"
                         required
                       />
                     </div>
