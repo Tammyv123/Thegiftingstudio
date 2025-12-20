@@ -4,13 +4,13 @@ import { Product } from "./useProducts";
 
 export const useSubcategoryProducts = (category: string, subcategory: string) => {
   return useQuery({
-    queryKey: ["products", category, subcategory],
+    queryKey: ["products", category.toLowerCase(), subcategory.toLowerCase()],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .eq("category", category)
-        .eq("subcategory", subcategory);
+        .ilike("category", category)
+        .ilike("subcategory", subcategory);
       
       if (error) throw error;
       
