@@ -37,12 +37,18 @@ const SUBCATEGORIES: Record<string, string[]> = {
   "gourmet hampers": ["chocolate", "wine", "snacks", "tea"]
 };
 
-export const ProductForm = () => {
+interface ProductFormProps {
+  defaultCategory?: string;
+  defaultSubcategory?: string;
+  onSuccess?: () => void;
+}
+
+export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: ProductFormProps) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    category: "",
-    subcategory: "",
+    category: defaultCategory || "",
+    subcategory: defaultSubcategory || "",
     description: "",
     price: "",
     colors: "",
@@ -103,8 +109,8 @@ export const ProductForm = () => {
       // Reset form
       setFormData({
         name: "",
-        category: "",
-        subcategory: "",
+        category: defaultCategory || "",
+        subcategory: defaultSubcategory || "",
         description: "",
         price: "",
         colors: "",
@@ -114,6 +120,8 @@ export const ProductForm = () => {
       setImages([]);
       setPreviewUrls([]);
       setImageCount(1);
+      
+      onSuccess?.();
     } catch (error: any) {
       console.error("Error adding product:", error);
       toast.error(error.message || "Failed to add product");
