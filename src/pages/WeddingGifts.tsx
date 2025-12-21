@@ -17,14 +17,14 @@ const WeddingGifts = () => {
       title: "Trays",
       description: "Elegant trays for gifting",
       image: "/WeddingPhotos/trays.jpg",
-      link: "/wedding/trays",
+      link: "/wedding/tray",
       gradient: "bg-gradient-to-br from-rose-pink/20 to-sunshine-yellow/20",
     },
     {
       title: "Return Favors",
       description: "Thoughtful keepsakes for guests",
       image: "/WeddingPhotos/ReturnFavours.jpeg",
-      link: "/wedding/return-favors",
+      link: "/wedding/return-favour",
       gradient: "bg-gradient-to-br from-lavender/20 to-mint-green/20",
     },
     {
@@ -52,7 +52,7 @@ const WeddingGifts = () => {
       title: "Gifts",
       description: "Perfect gifts for every taste",
       image: "https://images.unsplash.com/photo-1612197525106-36be9c2f8933?w=600",
-      link: "/wedding/gifts",
+      link: "/wedding/gift",
       gradient: "bg-gradient-to-br from-sky-400/20 to-indigo-400/20",
     },
   ];
