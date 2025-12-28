@@ -7,7 +7,7 @@ import { useSubcategoryProducts } from "@/hooks/useSubcategoryProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
 
 const WeddingTray = () => {
-  const { data: products = [], refetch } = useSubcategoryProducts("Wedding", "Tray");
+  const { data: products = [] } = useSubcategoryProducts("wedding gift", "trays");
   const [sortBy, setSortBy] = useState("default");
   const sortedProducts = useSortedProducts(products, sortBy);
 
