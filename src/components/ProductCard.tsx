@@ -117,11 +117,11 @@ export const ProductCard = ({ id, name, price, image, category }: ProductCardPro
         </div>
         </div>
       </Link>
-      <CardContent className="p-4">
-        <Link to={`/product/${id}`}>
-          <h3 className="font-semibold text-lg line-clamp-2 mb-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
+      <CardContent className="p-4 flex flex-col h-[100px]">
+        <Link to={`/product/${id}`} className="flex-1">
+          <h3 className="font-semibold text-lg line-clamp-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
         </Link>
-        <p className="text-2xl font-bold text-primary">₹{Math.round(price)}</p>
+        <p className="text-2xl font-bold text-primary mt-auto">₹{Math.round(price)}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button
