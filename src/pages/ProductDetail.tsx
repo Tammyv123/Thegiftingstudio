@@ -112,7 +112,7 @@ const ProductDetail = () => {
           <div className="flex flex-col gap-6">
             <div>
               <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
-              <p className="text-4xl font-bold text-primary mb-6">₹{product.price}</p>
+              <p className="text-4xl font-bold text-primary mb-6">₹{Math.round(Number(product.price))}</p>
             </div>
 
             {product.description && (

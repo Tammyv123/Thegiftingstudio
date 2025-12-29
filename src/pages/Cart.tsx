@@ -40,7 +40,7 @@ const Cart = () => {
                       />
                       <div className="flex-1">
                         <h3 className="font-semibold">{item.products.name}</h3>
-                        <p className="text-lg font-bold text-primary">₹{Number(item.products.price).toFixed(2)}</p>
+                        <p className="text-lg font-bold text-primary">₹{Math.round(Number(item.products.price))}</p>
                         <div className="mt-2 flex items-center gap-2">
                           <Button 
                             variant="outline" 
@@ -83,15 +83,15 @@ const Cart = () => {
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>₹{subtotal.toFixed(2)}</span>
+                  <span>₹{Math.round(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span>₹{shipping.toFixed(2)}</span>
+                  <span>₹{shipping}</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">₹{total.toFixed(2)}</span>
+                  <span className="text-primary">₹{Math.round(total)}</span>
                 </div>
               </div>
               <Link to="/checkout">

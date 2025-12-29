@@ -287,10 +287,10 @@ export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: 
                   <Input
                     id="price"
                     type="number"
-                    step="0.01"
+                    step="1"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    placeholder="0.00"
+                    placeholder="0"
                     className="h-12 text-lg pl-8 border-border/50 focus:border-primary"
                     required
                   />
