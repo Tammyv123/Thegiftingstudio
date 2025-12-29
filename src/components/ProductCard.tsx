@@ -93,7 +93,7 @@ export const ProductCard = ({ id, name, price, image, category }: ProductCardPro
           <img
             src={image}
             alt={name}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="h-full w-full object-contain bg-muted/30 transition-transform duration-300 group-hover:scale-110"
           />
         <Button
           variant="ghost"

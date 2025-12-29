@@ -99,7 +99,7 @@ const ProductDetail = () => {
             <img
               src={product.image}
               alt={product.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain bg-muted/30"
             />
             <div className="absolute top-4 left-4">
               <span className="rounded-full bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow-card">
