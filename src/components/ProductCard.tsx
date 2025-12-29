@@ -121,7 +121,7 @@ export const ProductCard = ({ id, name, price, image, category }: ProductCardPro
         <Link to={`/product/${id}`}>
           <h3 className="font-semibold text-lg line-clamp-2 mb-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
         </Link>
-        <p className="text-2xl font-bold text-primary">₹{price}</p>
+        <p className="text-2xl font-bold text-primary">₹{Math.round(price)}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button

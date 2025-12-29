@@ -45,10 +45,10 @@ const Checkout = () => {
 
   const handleOrderOnWhatsApp = () => {
     const orderDetails = cartItems
-      .map(item => `${item.products.name} (Qty: ${item.quantity}) - ₹${Number(item.products.price) * item.quantity}`)
+      .map(item => `${item.products.name} (Qty: ${item.quantity}) - ₹${Math.round(Number(item.products.price) * item.quantity)}`)
       .join("\n");
     
-    const message = `Hi! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nShipping: ₹${shipping}\nTotal: ₹${total.toFixed(2)}\n\nDelivery Address:\n${address.fullName}\n${address.phone}\n${address.address}, ${address.city}, ${address.state} - ${address.pincode}`;
+    const message = `Hi! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ₹${Math.round(subtotal)}\nShipping: ₹${shipping}\nTotal: ₹${Math.round(total)}\n\nDelivery Address:\n${address.fullName}\n${address.phone}\n${address.address}, ${address.city}, ${address.state} - ${address.pincode}`;
     
     window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, "_blank");
   };
@@ -249,13 +249,13 @@ const Checkout = () => {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex justify-between text-sm">
                     <span>{item.products.name} x{item.quantity}</span>
-                    <span>₹{(Number(item.products.price) * item.quantity).toFixed(2)}</span>
+                    <span>₹{Math.round(Number(item.products.price) * item.quantity)}</span>
                   </div>
                 ))}
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>₹{subtotal.toFixed(2)}</span>
+                    <span>₹{Math.round(subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
@@ -263,7 +263,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total</span>
-                    <span className="text-primary">₹{total.toFixed(2)}</span>
+                    <span className="text-primary">₹{Math.round(total)}</span>
                   </div>
                 </div>
               </CardContent>
