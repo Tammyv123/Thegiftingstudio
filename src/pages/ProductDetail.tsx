@@ -7,6 +7,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { Heart, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Product } from "@/hooks/useProducts";
+import { ProductImageGallery } from "@/components/ProductImageGallery";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +48,29 @@ const ProductDetail = () => {
     }
   };
 
+  // Get all images for the gallery
+  const getProductImages = (): string[] => {
+    if (!product) return [];
+    
+    const allImages: string[] = [];
+    
+    // Add main image first
+    if (product.image) {
+      allImages.push(product.image);
+    }
+    
+    // Add additional images from images array
+    if (product.images && Array.isArray(product.images)) {
+      product.images.forEach((img) => {
+        if (img && !allImages.includes(img)) {
+          allImages.push(img);
+        }
+      });
+    }
+    
+    return allImages;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-soft">
@@ -79,6 +103,8 @@ const ProductDetail = () => {
     );
   }
 
+  const productImages = getProductImages();
+
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
@@ -94,14 +120,13 @@ const ProductDetail = () => {
         </Button>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* Product Image */}
-          <div className="relative aspect-square overflow-hidden rounded-2xl bg-card">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="h-full w-full object-contain bg-muted/30"
+          {/* Product Image Gallery */}
+          <div className="relative">
+            <ProductImageGallery 
+              images={productImages} 
+              productName={product.name} 
             />
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-4 left-4 z-10">
               <span className="rounded-full bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow-card">
                 {product.category}
               </span>
