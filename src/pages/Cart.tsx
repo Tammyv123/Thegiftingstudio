@@ -30,49 +30,67 @@ const Cart = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {cartItems.map((item) => (
-                  <Card key={item.id} className="p-4">
-                    <div className="flex gap-4">
-                      <img
-                        src={item.products.image}
-                        alt={item.products.name}
-                        className="h-24 w-24 rounded-lg object-cover"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold">{item.products.name}</h3>
-                        <p className="text-lg font-bold text-primary">₹{Math.round(Number(item.products.price))}</p>
-                        <div className="mt-2 flex items-center gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="icon" 
-                            className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            disabled={item.quantity <= 1}
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <span className="w-8 text-center">{item.quantity}</span>
-                          <Button 
-                            variant="outline" 
-                            size="icon" 
-                            className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
+                {cartItems.map((item) => {
+                  // Get the correct image for the selected color
+                  const getItemImage = () => {
+                    if (item.selected_color && item.products.colors && item.products.images) {
+                      const colorIndex = item.products.colors.indexOf(item.selected_color);
+                      if (colorIndex >= 0 && colorIndex < item.products.images.length) {
+                        return item.products.images[colorIndex];
+                      }
+                    }
+                    return item.products.image;
+                  };
+
+                  return (
+                    <Card key={item.id} className="p-4">
+                      <div className="flex gap-4">
+                        <img
+                          src={getItemImage()}
+                          alt={item.products.name}
+                          className="h-24 w-24 rounded-lg object-contain bg-muted/30"
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-semibold">{item.products.name}</h3>
+                          {item.selected_color && (
+                            <p className="text-sm text-muted-foreground">
+                              Color: <span className="font-medium text-foreground">{item.selected_color}</span>
+                            </p>
+                          )}
+                          <p className="text-lg font-bold text-primary">₹{Math.round(Number(item.products.price))}</p>
+                          <div className="mt-2 flex items-center gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="icon" 
+                              className="h-8 w-8"
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                            <span className="w-8 text-center">{item.quantity}</span>
+                            <Button 
+                              variant="outline" 
+                              size="icon" 
+                              className="h-8 w-8"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive"
+                          onClick={() => removeFromCart(item.id)}
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="text-destructive"
-                        onClick={() => removeFromCart(item.id)}
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>

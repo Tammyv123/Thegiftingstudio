@@ -7,18 +7,21 @@ interface CartItem {
   id: string;
   product_id: string;
   quantity: number;
+  selected_color: string | null;
   products: {
     id: string;
     name: string;
     price: number;
     image: string;
+    images: string[] | null;
+    colors: string[] | null;
     category: string;
   };
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (productId: string) => Promise<void>;
+  addToCart: (productId: string, selectedColor?: string | null) => Promise<void>;
   removeFromCart: (itemId: string) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -44,7 +47,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     const { data, error } = await supabase
       .from("cart_items")
-      .select("*, products(*)")
+      .select("*, products(id, name, price, image, images, colors, category)")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -55,15 +58,31 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   };
 
-  const addToCart = async (productId: string) => {
+  const addToCart = async (productId: string, selectedColor?: string | null) => {
     if (!user) {
       toast.error("Please sign in to add items to cart");
       return;
     }
 
+    // Check if item with same color already exists
+    const existingItem = cartItems.find(
+      item => item.product_id === productId && item.selected_color === (selectedColor || null)
+    );
+
+    if (existingItem) {
+      // Update quantity instead
+      await updateQuantity(existingItem.id, existingItem.quantity + 1);
+      return;
+    }
+
     const { error } = await supabase
       .from("cart_items")
-      .upsert({ user_id: user.id, product_id: productId, quantity: 1 }, { onConflict: "user_id,product_id" });
+      .insert({ 
+        user_id: user.id, 
+        product_id: productId, 
+        quantity: 1,
+        selected_color: selectedColor || null
+      });
 
     if (error) {
       toast.error("Error adding to cart");
