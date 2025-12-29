@@ -37,6 +37,8 @@ const Products = () => {
                 name={product.name}
                 price={Number(product.price)}
                 image={product.image}
+                images={product.images}
+                colors={product.colors}
                 category={product.category}
                 description={product.description}
                 subcategory={product.subcategory}

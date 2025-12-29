@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Heart, ShoppingCart, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -21,12 +21,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ProductEditDialog } from "@/components/ProductEditDialog";
+import { ColorSelector } from "@/components/ColorSelector";
 
 interface ProductCardProps {
   id: string;
   name: string;
   price: number;
   image: string;
+  images?: string[] | null;
+  colors?: string[] | null;
   category: string;
   description?: string | null;
   subcategory?: string | null;
@@ -38,7 +41,9 @@ export const ProductCard = ({
   id, 
   name, 
   price, 
-  image, 
+  image,
+  images,
+  colors,
   category,
   description,
   subcategory,
@@ -50,11 +55,31 @@ export const ProductCard = ({
   const { isAdmin } = useIsAdmin();
   const queryClient = useQueryClient();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
   
   const isWishlisted = isInWishlist(id);
 
+  // Get the image for the selected color
+  const getDisplayImage = (): string => {
+    // If colors exist and a color is selected, try to get corresponding image
+    if (colors && colors.length > 0 && images && images.length > 0) {
+      // Use the color index to get the corresponding image
+      if (selectedColorIndex < images.length) {
+        return images[selectedColorIndex];
+      }
+    }
+    // Fallback to main image
+    return image;
+  };
+
+  const handleColorSelect = (color: string, index: number) => {
+    setSelectedColor(color);
+    setSelectedColorIndex(index);
+  };
+
   const handleAddToCart = () => {
-    addToCart(id);
+    addToCart(id, selectedColor);
   };
 
   const handleToggleWishlist = () => {
@@ -75,6 +100,8 @@ export const ProductCard = ({
       toast.error(error.message || "Failed to delete product");
     }
   };
+
+  const displayImage = getDisplayImage();
 
   return (
     <>
@@ -122,7 +149,7 @@ export const ProductCard = ({
         <Link to={`/product/${id}`}>
           <div className="relative aspect-square overflow-hidden cursor-pointer">
             <img
-              src={image}
+              src={displayImage}
               alt={name}
               className="h-full w-full object-contain bg-muted/30 transition-transform duration-300 group-hover:scale-110"
             />
@@ -148,11 +175,26 @@ export const ProductCard = ({
           </div>
           </div>
         </Link>
-        <CardContent className="p-4 flex flex-col h-[100px]">
+        <CardContent className="p-4 flex flex-col gap-2">
           <Link to={`/product/${id}`} className="flex-1">
             <h3 className="font-semibold text-lg line-clamp-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
           </Link>
-          <p className="text-2xl font-bold text-primary mt-auto">₹{Math.round(price)}</p>
+          <p className="text-2xl font-bold text-primary">₹{Math.round(price)}</p>
+          
+          {/* Color Selector */}
+          {colors && colors.length > 0 && (
+            <div className="pt-2">
+              <p className="text-xs text-muted-foreground mb-2">
+                {selectedColor ? `Selected: ${selectedColor}` : "Select Color"}
+              </p>
+              <ColorSelector
+                colors={colors}
+                selectedColor={selectedColor}
+                onColorSelect={handleColorSelect}
+                size="sm"
+              />
+            </div>
+          )}
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <Button

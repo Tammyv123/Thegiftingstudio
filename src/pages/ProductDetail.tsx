@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,14 +7,30 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { Heart, ShoppingCart, ArrowLeft } from "lucide-react";
-import { Product } from "@/hooks/useProducts";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
+import { ColorSelector } from "@/components/ColorSelector";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  images?: string[] | null;
+  colors?: string[] | null;
+  category: string;
+  description?: string | null;
+  subcategory?: string | null;
+  stock?: number;
+  low_stock_threshold?: number | null;
+}
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -30,11 +47,24 @@ const ProductDetail = () => {
     enabled: !!id,
   });
 
+  // Set default color when product loads
+  useEffect(() => {
+    if (product?.colors && product.colors.length > 0 && !selectedColor) {
+      setSelectedColor(product.colors[0]);
+      setSelectedColorIndex(0);
+    }
+  }, [product]);
+
   const isWishlisted = product ? isInWishlist(product.id) : false;
+
+  const handleColorSelect = (color: string, index: number) => {
+    setSelectedColor(color);
+    setSelectedColorIndex(index);
+  };
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product.id);
+      addToCart(product.id, selectedColor);
     }
   };
 
@@ -48,18 +78,28 @@ const ProductDetail = () => {
     }
   };
 
-  // Get all images for the gallery
+  // Get images for gallery - if colors exist, show only the selected color's image
   const getProductImages = (): string[] => {
     if (!product) return [];
     
+    const hasColors = product.colors && product.colors.length > 0;
+    const hasImages = product.images && product.images.length > 0;
+    
+    // If product has colors and images mapped to colors
+    if (hasColors && hasImages) {
+      // Show only the image for the selected color
+      if (selectedColorIndex < product.images!.length) {
+        return [product.images![selectedColorIndex]];
+      }
+    }
+    
+    // Default: show all images
     const allImages: string[] = [];
     
-    // Add main image first
     if (product.image) {
       allImages.push(product.image);
     }
     
-    // Add additional images from images array
     if (product.images && Array.isArray(product.images)) {
       product.images.forEach((img) => {
         if (img && !allImages.includes(img)) {
@@ -104,6 +144,7 @@ const ProductDetail = () => {
   }
 
   const productImages = getProductImages();
+  const hasColors = product.colors && product.colors.length > 0;
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -139,6 +180,21 @@ const ProductDetail = () => {
               <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
               <p className="text-4xl font-bold text-primary mb-6">₹{Math.round(Number(product.price))}</p>
             </div>
+
+            {/* Color Selector */}
+            {hasColors && (
+              <div>
+                <h2 className="text-lg font-semibold mb-3">
+                  Color: <span className="text-primary">{selectedColor}</span>
+                </h2>
+                <ColorSelector
+                  colors={product.colors!}
+                  selectedColor={selectedColor}
+                  onColorSelect={handleColorSelect}
+                  size="md"
+                />
+              </div>
+            )}
 
             {product.description && (
               <div>
@@ -183,6 +239,12 @@ const ProductDetail = () => {
                 <span className="text-muted-foreground">Category</span>
                 <span className="font-medium">{product.category}</span>
               </div>
+              {selectedColor && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Selected Color</span>
+                  <span className="font-medium">{selectedColor}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Availability</span>
                 <span className="font-medium text-success">In Stock</span>
