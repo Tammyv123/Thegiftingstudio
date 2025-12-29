@@ -7,9 +7,10 @@ export interface Product {
   price: number;
   image: string;
   category: string;
-  description?: string;
+  description?: string | null;
+  subcategory?: string | null;
   stock?: number;
-  low_stock_threshold?: number;
+  low_stock_threshold?: number | null;
 }
 
 export const useProducts = (category?: string) => {
