@@ -38,6 +38,10 @@ const Products = () => {
                 price={Number(product.price)}
                 image={product.image}
                 category={product.category}
+                description={product.description}
+                subcategory={product.subcategory}
+                stock={product.stock}
+                low_stock_threshold={product.low_stock_threshold}
               />
             ))}
           </div>
