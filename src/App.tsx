@@ -54,6 +54,7 @@ import Hand from "./pages/accessories/Hand";
 
 // Festive subcategories
 import Diwali from "./pages/festive/Diwali";
+import DiyasCandles from "./pages/festive/diwali/DiyasCandles";
 import Holi from "./pages/festive/Holi";
 import Eid from "./pages/festive/Eid";
 import Rakshabandhan from "./pages/festive/Rakshabandhan";
@@ -110,8 +111,9 @@ const App = () => (
                 <Route path="/accessories/necklace" element={<Necklace />} />
                 <Route path="/accessories/hand" element={<Hand />} />
                 
-                {/* Festive subcategory routes */}
+{/* Festive subcategory routes */}
                 <Route path="/festive/diwali" element={<Diwali />} />
+                <Route path="/festive/diwali/diyas-candles" element={<DiyasCandles />} />
                 <Route path="/festive/holi" element={<Holi />} />
                 <Route path="/festive/eid" element={<Eid />} />
                 <Route path="/festive/rakshabandhan" element={<Rakshabandhan />} />
