@@ -225,7 +225,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -253,7 +255,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -281,7 +285,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -309,7 +315,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -337,7 +345,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -365,7 +375,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -393,7 +405,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
@@ -421,7 +435,9 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.image}
+                  image={product.image || ""}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}
