@@ -36,7 +36,7 @@ const categoryNav = [
   { name: "Accessories", path: "/accessories", icon: Watch, gradient: "from-rose-pink to-mint-green" },
   { name: "Party Supplies", path: "/products", icon: PartyPopper, gradient: "from-rose-pink to-sunshine-yellow" },
   { name: "Flowers", path: "/products", icon: Flower2, gradient: "from-sunshine-yellow to-rose-pink" },
-  { name: "Diyas & Candles", path: "/products", icon: Flame, gradient: "from-lavender to-mint-green" },
+  { name: "Diyas & Candles", path: "/festive/diwali/diyas-candles", icon: Flame, gradient: "from-lavender to-mint-green" },
   { name: "Corporate Gifts", path: "/corporate", icon: Briefcase, gradient: "from-mint-green to-sunshine-yellow" },
 ];
 
