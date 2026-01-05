@@ -464,7 +464,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2024 The Gifting Studio. All rights reserved.</p>
+          <p>© 2026 The Gifting Studio. All  reserved.</p>
         </div>
       </footer>
     </div>
