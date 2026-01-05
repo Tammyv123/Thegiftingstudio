@@ -4,10 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { ProductForm } from "@/components/ProductForm";
 import { InventoryManagement } from "@/components/InventoryManagement";
+import { CategoryManagement } from "@/components/CategoryManagement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Package, FolderOpen, Boxes } from "lucide-react";
 
 const AdminPortal = () => {
   const navigate = useNavigate();
@@ -72,11 +73,35 @@ const AdminPortal = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Admin Portal</h1>
         
-        <Tabs defaultValue="inventory" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="inventory">Inventory Management</TabsTrigger>
-            <TabsTrigger value="add-product">Add New Product</TabsTrigger>
+        <Tabs defaultValue="categories" className="space-y-6">
+          <TabsList className="grid w-full max-w-lg grid-cols-3">
+            <TabsTrigger value="categories" className="gap-2">
+              <FolderOpen className="h-4 w-4" />
+              Categories
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="gap-2">
+              <Boxes className="h-4 w-4" />
+              Inventory
+            </TabsTrigger>
+            <TabsTrigger value="add-product" className="gap-2">
+              <Package className="h-4 w-4" />
+              Add Product
+            </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="categories">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FolderOpen className="h-5 w-5 text-primary" />
+                  Category & Subcategory Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CategoryManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
           
           <TabsContent value="inventory">
             <Card>

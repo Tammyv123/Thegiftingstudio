@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,33 +9,18 @@ import { toast } from "sonner";
 import { Loader2, X, Plus, ImagePlus, Package, Tag, IndianRupee, FileText, Palette, Boxes } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const CATEGORIES = [
-  "festive gift",
-  "wedding gift",
-  "birthday gift",
-  "anniversary gift",
-  "personalised gift",
-  "premium gift",
-  "home essentials",
-  "accessories",
-  "party supplies",
-  "corporate gift",
-  "gourmet hampers"
-];
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
-const SUBCATEGORIES: Record<string, string[]> = {
-  "wedding gift": ["trays", "return favours", "jewellery", "props", "hampers", "gifts"],
-  "festive gift": ["diwali", "holi", "christmas", "eid", "rakshabandhan", "new year", "lohri"],
-  "birthday gift": ["gift for her", "gift for him", "gift for mother", "gift for father", "gift for sibling"],
-  "accessories": ["earrings", "necklace", "hand", "hair"],
-  "anniversary gift": ["romantic", "personalized", "luxury"],
-  "personalised gift": ["engraved", "photo", "custom"],
-  "premium gift": ["luxury hampers", "designer", "exclusive"],
-  "home essentials": ["decor", "kitchen", "living"],
-  "party supplies": ["decorations", "tableware", "balloons"],
-  "corporate gift": ["executive", "bulk", "branded"],
-  "gourmet hampers": ["chocolate", "wine", "snacks", "tea"]
-};
+interface Subcategory {
+  id: string;
+  category_id: string;
+  name: string;
+  slug: string;
+}
 
 interface ProductFormProps {
   defaultCategory?: string;
@@ -45,6 +30,10 @@ interface ProductFormProps {
 
 export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: ProductFormProps) => {
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  
   const [formData, setFormData] = useState({
     name: "",
     category: defaultCategory || "",
@@ -58,6 +47,35 @@ export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: 
   const [imageCount, setImageCount] = useState(1);
   const [images, setImages] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const [categoriesRes, subcategoriesRes] = await Promise.all([
+        supabase.from("categories").select("*").order("name"),
+        supabase.from("subcategories").select("*").order("name")
+      ]);
+
+      if (categoriesRes.error) throw categoriesRes.error;
+      if (subcategoriesRes.error) throw subcategoriesRes.error;
+
+      setCategories(categoriesRes.data || []);
+      setSubcategories(subcategoriesRes.data || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
+  const getSubcategoriesForCategory = (categorySlug: string) => {
+    const category = categories.find(c => c.slug === categorySlug);
+    if (!category) return [];
+    return subcategories.filter(sub => sub.category_id === category.id);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,7 +163,7 @@ export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: 
     setPreviewUrls(newPreviews);
   };
 
-  const subcategories = SUBCATEGORIES[formData.category] || [];
+  const availableSubcategories = getSubcategoriesForCategory(formData.category);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -241,16 +259,16 @@ export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: 
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {CATEGORIES.map((cat) => (
-                      <SelectItem key={cat} value={cat} className="text-base capitalize">
-                        {cat}
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.slug} className="text-base capitalize">
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {subcategories.length > 0 && (
+              {availableSubcategories.length > 0 && (
                 <div className="space-y-2">
                   <Label htmlFor="subcategory" className="flex items-center gap-2 text-base font-medium">
                     <Tag className="h-4 w-4 text-primary" />
@@ -264,9 +282,9 @@ export const ProductForm = ({ defaultCategory, defaultSubcategory, onSuccess }: 
                       <SelectValue placeholder="Select a subcategory" />
                     </SelectTrigger>
                     <SelectContent>
-                      {subcategories.map((subcat) => (
-                        <SelectItem key={subcat} value={subcat} className="text-base capitalize">
-                          {subcat}
+                      {availableSubcategories.map((subcat) => (
+                        <SelectItem key={subcat.id} value={subcat.slug} className="text-base capitalize">
+                          {subcat.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
