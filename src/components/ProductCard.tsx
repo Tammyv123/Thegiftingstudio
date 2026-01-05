@@ -147,14 +147,24 @@ export const ProductCard = ({
               }`}
             />
           </Button>
-          <div className="absolute bottom-2 left-2 flex gap-2">
+          <div className="absolute bottom-2 left-2 flex flex-col gap-2">
             <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
               {category}
             </span>
             {hasColors && (
-              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                {colors.length} Colors
-              </span>
+              <div className="flex items-center gap-1 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1">
+                {colors.slice(0, 4).map((color, index) => (
+                  <div
+                    key={index}
+                    className="w-3 h-3 rounded-full border border-border/50"
+                    style={{ backgroundColor: color.toLowerCase() }}
+                    title={color}
+                  />
+                ))}
+                {colors.length > 4 && (
+                  <span className="text-xs text-muted-foreground ml-1">+{colors.length - 4}</span>
+                )}
+              </div>
             )}
           </div>
           </div>
