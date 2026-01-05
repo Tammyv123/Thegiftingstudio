@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Heart, ShoppingCart, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -21,7 +21,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ProductEditDialog } from "@/components/ProductEditDialog";
-import { ColorSelector } from "@/components/ColorSelector";
 
 interface ProductCardProps {
   id: string;
@@ -42,7 +41,6 @@ export const ProductCard = ({
   name, 
   price, 
   image,
-  images,
   colors,
   category,
   description,
@@ -55,31 +53,11 @@ export const ProductCard = ({
   const { isAdmin } = useIsAdmin();
   const queryClient = useQueryClient();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
   
   const isWishlisted = isInWishlist(id);
 
-  // Get the image for the selected color
-  const getDisplayImage = (): string => {
-    // If colors exist and a color is selected, try to get corresponding image
-    if (colors && colors.length > 0 && images && images.length > 0) {
-      // Use the color index to get the corresponding image
-      if (selectedColorIndex < images.length) {
-        return images[selectedColorIndex];
-      }
-    }
-    // Fallback to main image
-    return image;
-  };
-
-  const handleColorSelect = (color: string, index: number) => {
-    setSelectedColor(color);
-    setSelectedColorIndex(index);
-  };
-
   const handleAddToCart = () => {
-    addToCart(id, selectedColor);
+    addToCart(id, null);
   };
 
   const handleToggleWishlist = () => {
@@ -101,7 +79,8 @@ export const ProductCard = ({
     }
   };
 
-  const displayImage = getDisplayImage();
+  // Show color indicator if colors are available
+  const hasColors = colors && colors.length > 0;
 
   return (
     <>
@@ -149,7 +128,7 @@ export const ProductCard = ({
         <Link to={`/product/${id}`}>
           <div className="relative aspect-square overflow-hidden cursor-pointer">
             <img
-              src={displayImage}
+              src={image}
               alt={name}
               className="h-full w-full object-contain bg-muted/30 transition-transform duration-300 group-hover:scale-110"
             />
@@ -168,10 +147,15 @@ export const ProductCard = ({
               }`}
             />
           </Button>
-          <div className="absolute bottom-2 left-2">
+          <div className="absolute bottom-2 left-2 flex gap-2">
             <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
               {category}
             </span>
+            {hasColors && (
+              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                {colors.length} Colors
+              </span>
+            )}
           </div>
           </div>
         </Link>
@@ -180,21 +164,6 @@ export const ProductCard = ({
             <h3 className="font-semibold text-lg line-clamp-2 hover:text-primary transition-colors cursor-pointer">{name}</h3>
           </Link>
           <p className="text-2xl font-bold text-primary">₹{Math.round(price)}</p>
-          
-          {/* Color Selector */}
-          {colors && colors.length > 0 && (
-            <div className="pt-2">
-              <p className="text-xs text-muted-foreground mb-2">
-                {selectedColor ? `Selected: ${selectedColor}` : "Select Color"}
-              </p>
-              <ColorSelector
-                colors={colors}
-                selectedColor={selectedColor}
-                onColorSelect={handleColorSelect}
-                size="sm"
-              />
-            </div>
-          )}
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <Button
