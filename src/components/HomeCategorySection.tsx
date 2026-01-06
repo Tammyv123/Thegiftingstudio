@@ -21,6 +21,23 @@ interface HomeCategorySectionProps {
   fallbackBanner?: string;
 }
 
+// Map category slugs to actual route paths
+const categoryRouteMap: Record<string, string> = {
+  "festive gift": "/festive",
+  "wedding gift": "/wedding",
+  "birthday gift": "/birthday",
+  "anniversary gift": "/anniversary",
+  "personalised gift": "/personalised",
+  "corporate gift": "/corporate",
+  "premium gift": "/premium-hampers",
+  "gourmet hampers": "/gourmet",
+  "home essentials": "/home-essentials",
+  "accessories": "/accessories",
+  "party supplies": "/party-supplies",
+  "flowers": "/products?category=Flowers",
+  "diyas-candles": "/festive/diwali/diyas-candles",
+};
+
 export const HomeCategorySection = ({
   categoryName,
   categorySlug,
@@ -31,7 +48,8 @@ export const HomeCategorySection = ({
   if (products.length === 0) return null;
 
   const bannerImage = categoryImage || fallbackBanner;
-  const categoryLink = `/${categorySlug.replace(/\s+/g, '-').toLowerCase()}`;
+  // Use the route map, fallback to products page with category filter
+  const categoryLink = categoryRouteMap[categorySlug.toLowerCase()] || `/products?category=${encodeURIComponent(categoryName)}`;
 
   return (
     <section className="py-8">
