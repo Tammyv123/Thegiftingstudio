@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductFilters } from "@/components/ProductFilters";
 import { useSubcategoryProducts } from "@/hooks/useSubcategoryProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const Hand = () => {
   const { data: products = [] } = useSubcategoryProducts("Accessories", "Hand");
@@ -27,11 +28,14 @@ const Hand = () => {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Accessories" defaultSubcategory="Hand" />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 
