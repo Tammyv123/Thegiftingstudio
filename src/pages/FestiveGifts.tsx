@@ -6,6 +6,7 @@ import { ProductFilters } from "@/components/ProductFilters";
 import { useProducts } from "@/hooks/useProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
 import { Card, CardContent } from "@/components/ui/card";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const festiveCategories = [
   { name: "Holi", path: "/festive/holi", image: "https://images.unsplash.com/photo-1583241800698-c318921e0f01?w=400", description: "Festival of Colors" },
@@ -67,11 +68,14 @@ const FestiveGifts = () => {
       {/* All Products Grid */}
       <section className="container mx-auto px-4 py-16">
         <h2 className="mb-8 text-center text-3xl font-bold">All Festive Products</h2>
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Festive" />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 
