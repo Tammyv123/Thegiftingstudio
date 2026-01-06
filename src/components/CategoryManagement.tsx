@@ -7,8 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Trash2, Edit, ImagePlus, Loader2, FolderOpen, ChevronRight } from "lucide-react";
+import { Plus, Trash2, Edit, ImagePlus, Loader2, FolderOpen, ChevronRight, Package } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ProductForm } from "@/components/ProductForm";
 
 interface Category {
   id: string;
@@ -45,6 +46,11 @@ export const CategoryManagement = () => {
   
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [subcategoryDialogOpen, setSubcategoryDialogOpen] = useState(false);
+  
+  // Quick Add Product state
+  const [productDialogOpen, setProductDialogOpen] = useState(false);
+  const [quickAddCategory, setQuickAddCategory] = useState("");
+  const [quickAddSubcategory, setQuickAddSubcategory] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     fetchData();
@@ -379,20 +385,36 @@ export const CategoryManagement = () => {
           return (
             <AccordionItem key={category.id} value={category.id} className="border rounded-lg px-4">
               <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3">
-                  {category.image ? (
-                    <img src={category.image} alt={category.name} className="w-10 h-10 rounded-lg object-cover" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <FolderOpen className="h-5 w-5 text-primary" />
+                <div className="flex items-center justify-between w-full pr-4">
+                  <div className="flex items-center gap-3">
+                    {category.image ? (
+                      <img src={category.image} alt={category.name} className="w-10 h-10 rounded-lg object-cover" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <FolderOpen className="h-5 w-5 text-primary" />
+                      </div>
+                    )}
+                    <div className="text-left">
+                      <p className="font-medium">{category.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {categorySubcats.length} subcategories
+                      </p>
                     </div>
-                  )}
-                  <div className="text-left">
-                    <p className="font-medium">{category.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {categorySubcats.length} subcategories
-                    </p>
                   </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5 text-xs"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setQuickAddCategory(category.name);
+                      setQuickAddSubcategory(undefined);
+                      setProductDialogOpen(true);
+                    }}
+                  >
+                    <Package className="h-3.5 w-3.5" />
+                    Add Product
+                  </Button>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -414,14 +436,29 @@ export const CategoryManagement = () => {
                           )}
                           <span>{subcat.name}</span>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-destructive hover:text-destructive"
-                          onClick={() => handleDeleteSubcategory(subcat.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5 text-xs h-8"
+                            onClick={() => {
+                              setQuickAddCategory(category.name);
+                              setQuickAddSubcategory(subcat.name);
+                              setProductDialogOpen(true);
+                            }}
+                          >
+                            <Package className="h-3.5 w-3.5" />
+                            Add Product
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
+                            onClick={() => handleDeleteSubcategory(subcat.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     ))
                   ) : (
@@ -454,6 +491,22 @@ export const CategoryManagement = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Quick Add Product Dialog */}
+      <Dialog open={productDialogOpen} onOpenChange={setProductDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              Add New Product {quickAddSubcategory ? `to ${quickAddSubcategory}` : `to ${quickAddCategory}`}
+            </DialogTitle>
+          </DialogHeader>
+          <ProductForm 
+            defaultCategory={quickAddCategory}
+            defaultSubcategory={quickAddSubcategory}
+            onSuccess={() => setProductDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
