@@ -22,7 +22,8 @@ export const useProducts = (category?: string) => {
       let query = supabase.from("products").select("*");
       
       if (category) {
-        query = query.eq("category", category);
+        // Use ilike for pattern matching to include subcategory products
+        query = query.ilike("category", `%${category}%`);
       }
       
       const { data, error } = await query;
