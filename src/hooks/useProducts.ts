@@ -22,8 +22,10 @@ export const useProducts = (category?: string) => {
       let query = supabase.from("products").select("*");
       
       if (category) {
-        // Use ilike for pattern matching to include subcategory products
-        query = query.ilike("category", `%${category}%`);
+        // Extract the first word for pattern matching (e.g., "Festive" from "Festive Gift")
+        const categoryPattern = category.split(' ')[0];
+        // Use ilike for case-insensitive pattern matching to include all related products
+        query = query.ilike("category", `%${categoryPattern}%`);
       }
       
       const { data, error } = await query;
