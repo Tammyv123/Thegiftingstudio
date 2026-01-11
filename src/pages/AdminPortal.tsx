@@ -5,10 +5,11 @@ import { Navbar } from "@/components/Navbar";
 import { ProductForm } from "@/components/ProductForm";
 import { InventoryManagement } from "@/components/InventoryManagement";
 import { CategoryManagement } from "@/components/CategoryManagement";
+import { ProductCategoryDragDrop } from "@/components/ProductCategoryDragDrop";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Loader2, Package, FolderOpen, Boxes } from "lucide-react";
+import { Loader2, Package, FolderOpen, Boxes, Move } from "lucide-react";
 
 const AdminPortal = () => {
   const navigate = useNavigate();
@@ -74,10 +75,14 @@ const AdminPortal = () => {
         <h1 className="text-3xl font-bold mb-6">Admin Portal</h1>
         
         <Tabs defaultValue="categories" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="categories" className="gap-2">
               <FolderOpen className="h-4 w-4" />
               Categories
+            </TabsTrigger>
+            <TabsTrigger value="organize" className="gap-2">
+              <Move className="h-4 w-4" />
+              Organize
             </TabsTrigger>
             <TabsTrigger value="inventory" className="gap-2">
               <Boxes className="h-4 w-4" />
@@ -99,6 +104,20 @@ const AdminPortal = () => {
               </CardHeader>
               <CardContent>
                 <CategoryManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="organize">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Move className="h-5 w-5 text-primary" />
+                  Drag & Drop Products to Categories
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ProductCategoryDragDrop />
               </CardContent>
             </Card>
           </TabsContent>
