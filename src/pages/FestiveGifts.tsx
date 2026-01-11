@@ -15,6 +15,7 @@ const festiveCategories = [
   { name: "New Year", path: "/festive/new-year", image: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=400", description: "New Beginnings" },
   { name: "Rakshabandhan", path: "/festive/rakshabandhan", image: "https://images.unsplash.com/photo-1598520106830-8c45c2035460?w=400", description: "Bond of Siblings" },
   { name: "Eid", path: "/festive/eid", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400", description: "Blessed Celebrations" },
+  { name: "Ramzan", path: "/festive/ramzan", image: "https://images.unsplash.com/photo-1564121211835-e88c852648ab?w=400", description: "Holy Month Gifts" },
   { name: "Lohri", path: "/festive/lohri", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", description: "Harvest Festival" },
 ];
 

@@ -57,6 +57,7 @@ import Diwali from "./pages/festive/Diwali";
 import DiyasCandles from "./pages/festive/diwali/DiyasCandles";
 import Holi from "./pages/festive/Holi";
 import Eid from "./pages/festive/Eid";
+import Ramzan from "./pages/festive/Ramzan";
 import Rakshabandhan from "./pages/festive/Rakshabandhan";
 import Christmas from "./pages/festive/Christmas";
 import NewYear from "./pages/festive/NewYear";
@@ -116,6 +117,7 @@ const App = () => (
                 <Route path="/festive/diwali/diyas-candles" element={<DiyasCandles />} />
                 <Route path="/festive/holi" element={<Holi />} />
                 <Route path="/festive/eid" element={<Eid />} />
+                <Route path="/festive/ramzan" element={<Ramzan />} />
                 <Route path="/festive/rakshabandhan" element={<Rakshabandhan />} />
                 <Route path="/festive/christmas" element={<Christmas />} />
                 <Route path="/festive/new-year" element={<NewYear />} />
