@@ -5,6 +5,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
+
 dotenv.config();
 
 const app = express();
@@ -18,6 +21,52 @@ app.use(express.json());
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
   key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+});
+
+
+// --- GOOGLE SHEETS SETUP ---
+// You need a Service Account JSON from Google Cloud Console
+// and share your sheet with the service account email.
+const serviceAccountAuth = new JWT({
+  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || '', serviceAccountAuth);
+
+// Route: Log Order to Excel/Google Sheets
+app.post('/log-order', async (req, res) => {
+  try {
+    const { orderDetails, address, total, paymentMethod } = req.body;
+
+    // Load the document info
+    await doc.loadInfo();
+    
+    // Get the first sheet
+    const sheet = doc.sheetsByIndex[0];
+
+    // Prepare the row data
+    // Make sure your Sheet has these headers in Row 1: 
+    // Date, Name, Phone, Address, Items, Total, Payment Method
+    const newRow = {
+      Date: new Date().toLocaleString('en-IN'),
+      Name: address.fullName,
+      Phone: address.phone,
+      Address: `${address.address}, ${address.city}, ${address.state} - ${address.pincode}`,
+      Items: orderDetails, // String of items
+      Total: total,
+      'Payment Method': paymentMethod
+    };
+
+    await sheet.addRow(newRow);
+
+    res.json({ success: true, message: 'Logged to sheet' });
+  } catch (error) {
+    console.error('Sheet Error:', error);
+    // Don't fail the request if sheet logging fails, just log the error
+    res.status(500).json({ success: false, message: 'Failed to log to sheet' });
+  }
 });
 
 // Route 1: Create an Order

@@ -82,6 +82,31 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
+      // START: ADD THIS BLOCK
+      // ---------------------------------------------------------
+      try {
+        const orderSummary = cartItems
+          .map(item => `${item.products.name} (x${item.quantity})`)
+          .join(", ");
+
+        // Call your backend to log to Excel/Sheets
+        await fetch('http://localhost:5000/log-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderDetails: orderSummary,
+            address: address,
+            total: total,
+            paymentMethod: paymentMethod
+          })
+        });
+      } catch (sheetError) {
+        console.error("Failed to log to sheet, but order was placed:", sheetError);
+        // We do not stop the flow here because the main order succeeded
+      }
+      // ---------------------------------------------------------
+      // END: ADD THIS BLOCK
+
       await clearCart();
       toast.success("Order placed successfully!");
       navigate("/");
