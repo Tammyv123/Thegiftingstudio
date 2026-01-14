@@ -5,8 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
+import { google } from 'googleapis';
 
 dotenv.config();
 
@@ -21,52 +20,6 @@ app.use(express.json());
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
   key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-});
-
-
-// --- GOOGLE SHEETS SETUP ---
-// You need a Service Account JSON from Google Cloud Console
-// and share your sheet with the service account email.
-const serviceAccountAuth = new JWT({
-  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
-const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID || '', serviceAccountAuth);
-
-// Route: Log Order to Excel/Google Sheets
-app.post('/log-order', async (req, res) => {
-  try {
-    const { orderDetails, address, total, paymentMethod } = req.body;
-
-    // Load the document info
-    await doc.loadInfo();
-    
-    // Get the first sheet
-    const sheet = doc.sheetsByIndex[0];
-
-    // Prepare the row data
-    // Make sure your Sheet has these headers in Row 1: 
-    // Date, Name, Phone, Address, Items, Total, Payment Method
-    const newRow = {
-      Date: new Date().toLocaleString('en-IN'),
-      Name: address.fullName,
-      Phone: address.phone,
-      Address: `${address.address}, ${address.city}, ${address.state} - ${address.pincode}`,
-      Items: orderDetails, // String of items
-      Total: total,
-      'Payment Method': paymentMethod
-    };
-
-    await sheet.addRow(newRow);
-
-    res.json({ success: true, message: 'Logged to sheet' });
-  } catch (error) {
-    console.error('Sheet Error:', error);
-    // Don't fail the request if sheet logging fails, just log the error
-    res.status(500).json({ success: false, message: 'Failed to log to sheet' });
-  }
 });
 
 // Route 1: Create an Order
@@ -99,6 +52,76 @@ app.post('/verify-payment', (req, res) => {
     res.json({ success: true, message: 'Payment verified successfully' });
   } else {
     res.status(400).json({ success: false, message: 'Invalid signature' });
+  }
+});
+
+// --- GOOGLE SHEETS SETUP ---
+// You need a Service Account JSON from Google Cloud Console
+// and share your sheet with the service account email.
+let sheetsClient: any = null;
+async function initSheetsClient() {
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+
+  if (!spreadsheetId || !clientEmail || !privateKey) {
+    console.warn('Google Sheets: Missing env vars (GOOGLE_SHEET_ID, GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY)');
+    return;
+  }
+
+  try {
+    const auth = new google.auth.JWT({
+      email: clientEmail,
+      key: privateKey,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    sheetsClient = google.sheets({ version: 'v4', auth });
+    // quick test: get spreadsheet meta (optional)
+    const meta = await sheetsClient.spreadsheets.get({ spreadsheetId });
+    console.log(`Google Sheets connected: ${meta.data.properties?.title || spreadsheetId}`);
+  } catch (err) {
+    console.error('Failed to initialize Google Sheets (googleapis):', err);
+  }
+}
+
+initSheetsClient();
+
+// Route: Log Order to Excel/Google Sheets
+app.post('/log-order', async (req, res) => {
+  try {
+    const { orderDetails, address, total, paymentMethod } = req.body;
+    if (!sheetsClient) {
+      console.warn('Sheets client not initialized; cannot log order');
+      return res.json({ success: false, error: 'Sheets not configured' });
+    }
+
+    const spreadsheetId = process.env.GOOGLE_SHEET_ID || '';
+    const sheetName = process.env.GOOGLE_SHEET_NAME || 'Sheet1';
+
+    const row = [
+      new Date().toLocaleString('en-IN'),
+      address?.fullName || '',
+      address?.phone || '',
+      `${address?.address || ''}, ${address?.city || ''}, ${address?.state || ''} - ${address?.pincode || ''}`,
+      typeof orderDetails === 'string' ? orderDetails : JSON.stringify(orderDetails),
+      total,
+      paymentMethod,
+    ];
+
+    await sheetsClient.spreadsheets.values.append({
+      spreadsheetId,
+      range: `${sheetName}!A1:G1`,
+      valueInputOption: 'RAW',
+      requestBody: { values: [row] },
+    });
+
+    console.log('Logged order to Sheets');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Sheet Error:', error);
+    // We send 200 OK anyway so the frontend doesn't crash if Excel is down
+    res.json({ success: false, error: 'Sheet update failed' });
   }
 });
 
