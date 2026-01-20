@@ -9,6 +9,7 @@ import { useWishlist } from "@/contexts/WishlistContext";
 import { Heart, ShoppingCart, ArrowLeft } from "lucide-react";
 import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { ColorSelector } from "@/components/ColorSelector";
+import { ProductReviews } from "@/components/ProductReviews";
 
 interface Product {
   id: string;
@@ -256,6 +257,9 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+
+        {/* Product Reviews Section */}
+        <ProductReviews productId={product.id} />
       </div>
     </div>
   );
