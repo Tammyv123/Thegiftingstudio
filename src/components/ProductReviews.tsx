@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Star, Edit, Trash2 } from "lucide-react";
+import { Star, Edit, Trash2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProductReviews, Review } from "@/hooks/useProductReviews";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,9 +68,55 @@ const ReviewForm = ({
   onCancel?: () => void;
 }) => {
   const [rating, setRating] = useState(existingReview?.rating || 0);
-  const [title, setTitle] = useState(existingReview?.title || "");
   const [comment, setComment] = useState(existingReview?.comment || "");
+  const [photos, setPhotos] = useState<string[]>(existingReview?.photos || []);
+  const [uploading, setUploading] = useState(false);
   const { addReview, updateReview } = useProductReviews(productId);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    if (photos.length + files.length > 5) {
+      toast.error("Maximum 5 photos allowed per review");
+      return;
+    }
+
+    setUploading(true);
+    const newPhotos: string[] = [];
+
+    for (const file of Array.from(files)) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error(`${file.name} is too large. Max 5MB per image.`);
+        continue;
+      }
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${productId}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("product-images")
+        .upload(`reviews/${fileName}`, file);
+
+      if (error) {
+        toast.error(`Failed to upload ${file.name}`);
+        continue;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(`reviews/${fileName}`);
+
+      newPhotos.push(urlData.publicUrl);
+    }
+
+    setPhotos([...photos, ...newPhotos]);
+    setUploading(false);
+  };
+
+  const removePhoto = (index: number) => {
+    setPhotos(photos.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,11 +126,11 @@ const ReviewForm = ({
       updateReview.mutate({
         reviewId: existingReview.id,
         rating,
-        title,
         comment,
+        photos,
       });
     } else {
-      addReview.mutate({ rating, title, comment });
+      addReview.mutate({ rating, comment, photos });
     }
     
     if (onCancel) onCancel();
@@ -99,16 +146,6 @@ const ReviewForm = ({
       </div>
       
       <div>
-        <label className="block text-sm font-medium mb-2">Review Title</label>
-        <Input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Summarize your experience"
-          maxLength={100}
-        />
-      </div>
-      
-      <div>
         <label className="block text-sm font-medium mb-2">Your Review</label>
         <Textarea
           value={comment}
@@ -118,9 +155,46 @@ const ReviewForm = ({
           maxLength={1000}
         />
       </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-2">Add Photos (optional)</label>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {photos.map((photo, index) => (
+            <div key={index} className="relative">
+              <img
+                src={photo}
+                alt={`Review photo ${index + 1}`}
+                className="w-20 h-20 object-cover rounded-lg"
+              />
+              <button
+                type="button"
+                onClick={() => removePhoto(index)}
+                className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+        {photos.length < 5 && (
+          <label className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-lg cursor-pointer hover:bg-secondary/80 transition-colors">
+            <Upload className="h-4 w-4" />
+            {uploading ? "Uploading..." : "Upload Photo"}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoUpload}
+              disabled={uploading}
+              className="hidden"
+            />
+          </label>
+        )}
+        <p className="text-xs text-muted-foreground mt-1">Max 5 photos, 5MB each</p>
+      </div>
       
       <div className="flex gap-2">
-        <Button type="submit" disabled={rating === 0 || isSubmitting}>
+        <Button type="submit" disabled={rating === 0 || isSubmitting || uploading}>
           {isSubmitting ? "Submitting..." : existingReview ? "Update Review" : "Submit Review"}
         </Button>
         {onCancel && (
@@ -160,9 +234,6 @@ const ReviewCard = ({
       <div className="flex items-start justify-between mb-2">
         <div>
           <StarRating rating={review.rating} size="sm" />
-          {review.title && (
-            <h4 className="font-semibold mt-2">{review.title}</h4>
-          )}
         </div>
         {isOwner && (
           <div className="flex gap-2">
@@ -202,6 +273,24 @@ const ReviewCard = ({
       </div>
       {review.comment && (
         <p className="text-muted-foreground mt-2">{review.comment}</p>
+      )}
+      {review.photos && review.photos.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3">
+          {review.photos.map((photo, index) => (
+            <a
+              key={index}
+              href={photo}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={photo}
+                alt={`Review photo ${index + 1}`}
+                className="w-16 h-16 object-cover rounded-lg hover:opacity-80 transition-opacity"
+              />
+            </a>
+          ))}
+        </div>
       )}
       <p className="text-xs text-muted-foreground mt-3">
         {new Date(review.created_at).toLocaleDateString("en-US", {

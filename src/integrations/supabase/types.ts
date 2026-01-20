@@ -195,9 +195,9 @@ export type Database = {
           comment: string | null
           created_at: string
           id: string
+          photos: string[] | null
           product_id: string
           rating: number
-          title: string | null
           updated_at: string
           user_id: string
         }
@@ -205,9 +205,9 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
+          photos?: string[] | null
           product_id: string
           rating: number
-          title?: string | null
           updated_at?: string
           user_id: string
         }
@@ -215,9 +215,9 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
+          photos?: string[] | null
           product_id?: string
           rating?: number
-          title?: string | null
           updated_at?: string
           user_id?: string
         }
