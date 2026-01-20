@@ -8,8 +8,8 @@ export interface Review {
   product_id: string;
   user_id: string;
   rating: number;
-  title: string | null;
   comment: string | null;
+  photos: string[] | null;
   created_at: string;
   updated_at: string;
   user_email?: string;
@@ -54,12 +54,12 @@ export const useProductReviews = (productId: string) => {
   const addReview = useMutation({
     mutationFn: async ({
       rating,
-      title,
       comment,
+      photos,
     }: {
       rating: number;
-      title?: string;
       comment?: string;
+      photos?: string[];
     }) => {
       if (!user) throw new Error("Must be logged in to add review");
 
@@ -69,8 +69,8 @@ export const useProductReviews = (productId: string) => {
           product_id: productId,
           user_id: user.id,
           rating,
-          title: title || null,
           comment: comment || null,
+          photos: photos || [],
         })
         .select()
         .single();
@@ -96,13 +96,13 @@ export const useProductReviews = (productId: string) => {
     mutationFn: async ({
       reviewId,
       rating,
-      title,
       comment,
+      photos,
     }: {
       reviewId: string;
       rating: number;
-      title?: string;
       comment?: string;
+      photos?: string[];
     }) => {
       if (!user) throw new Error("Must be logged in to update review");
 
@@ -110,8 +110,8 @@ export const useProductReviews = (productId: string) => {
         .from("reviews")
         .update({
           rating,
-          title: title || null,
           comment: comment || null,
+          photos: photos || [],
         })
         .eq("id", reviewId)
         .eq("user_id", user.id)
