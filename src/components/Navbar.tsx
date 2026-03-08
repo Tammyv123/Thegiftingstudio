@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Menu, Heart, ShoppingCart, User, LogOut, Search, 
   Gift, Sparkles, Award, Flame, Package, Briefcase, 
-  Home, Cake, PartyPopper, Flower2, BookHeart, UtensilsCrossed, 
+  Home, PartyPopper, Flower2, 
   LampDesk, Watch, ShoppingBag, Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

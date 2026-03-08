@@ -38,12 +38,6 @@ import WeddingProps from "./pages/wedding/WeddingProps";
 import WeddingHampers from "./pages/wedding/WeddingHampers";
 import WeddingGift from "./pages/wedding/WeddingGift";
 
-// Birthday subcategories
-import GiftForHer from "./pages/birthday/GiftForHer";
-import GiftForHim from "./pages/birthday/GiftForHim";
-import GiftForSibling from "./pages/birthday/GiftForSibling";
-import GiftForMother from "./pages/birthday/GiftForMother";
-import GiftForFather from "./pages/birthday/GiftForFather";
 
 // Accessories subcategories
 import Earrings from "./pages/accessories/Earrings";
@@ -97,12 +91,6 @@ const App = () => (
                 <Route path="/wedding/hampers" element={<WeddingHampers />} />
                 <Route path="/wedding/gift" element={<WeddingGift />} />
                 
-                {/* Birthday subcategory routes */}
-                <Route path="/birthday/gift-for-her" element={<GiftForHer />} />
-                <Route path="/birthday/gift-for-him" element={<GiftForHim />} />
-                <Route path="/birthday/gift-for-sibling" element={<GiftForSibling />} />
-                <Route path="/birthday/gift-for-mother" element={<GiftForMother />} />
-                <Route path="/birthday/gift-for-father" element={<GiftForFather />} />
                 
                 {/* Accessories subcategory routes */}
                 <Route path="/accessories/earrings" element={<Earrings />} />
