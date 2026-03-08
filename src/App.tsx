@@ -10,9 +10,7 @@ import { Chatbot } from "./components/Chatbot";
 import Index from "./pages/Index";
 import FestiveGifts from "./pages/FestiveGifts";
 import WeddingGifts from "./pages/WeddingGifts";
-import PersonalisedGifts from "./pages/PersonalisedGifts";
-import BirthdayGifts from "./pages/BirthdayGifts";
-import AnniversaryGifts from "./pages/AnniversaryGifts";
+import Gifts from "./pages/Gifts";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import PremiumHampers from "./pages/PremiumHampers";
@@ -83,9 +81,7 @@ const App = () => (
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/festive" element={<FestiveGifts />} />
                 <Route path="/wedding" element={<WeddingGifts />} />
-                <Route path="/personalised" element={<PersonalisedGifts />} />
-                <Route path="/birthday" element={<BirthdayGifts />} />
-                <Route path="/anniversary" element={<AnniversaryGifts />} />
+                <Route path="/gifts" element={<Gifts />} />
                 <Route path="/premium-hampers" element={<PremiumHampers />} />
                 <Route path="/gourmet" element={<GourmetHampers />} />
                 <Route path="/corporate" element={<CorporateGifts />} />
