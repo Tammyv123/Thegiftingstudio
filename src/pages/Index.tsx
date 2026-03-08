@@ -105,25 +105,11 @@ const Index = () => {
       gradient: "bg-gradient-to-br from-lavender/20 to-mint-green/20",
     },
     {
-      title: "Personalised Gifts",
-      description: "Make it uniquely theirs",
+      title: "Gifts",
+      description: "Perfect gifts for every occasion",
       image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600",
-      link: "/personalised",
+      link: "/gifts",
       gradient: "bg-gradient-to-br from-mint-green/20 to-lavender/20",
-    },
-    {
-      title: "Birthday Gifts",
-      description: "Celebrate another wonderful year",
-      image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=600",
-      link: "/birthday",
-      gradient: "bg-gradient-to-br from-sunshine-yellow/20 to-rose-pink/20",
-    },
-    {
-      title: "Anniversary Gifts",
-      description: "Honor love that lasts",
-      image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600",
-      link: "/anniversary",
-      gradient: "bg-gradient-to-br from-rose-pink/20 to-lavender/20",
     },
     {
       title: "Corporate Gifts",

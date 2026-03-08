@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   Menu, Heart, ShoppingCart, User, LogOut, Search, 
   Gift, Sparkles, Award, Flame, Package, Briefcase, 
-  Home, Cake, PartyPopper, Flower2, BookHeart, UtensilsCrossed, 
+  Home, PartyPopper, Flower2, 
   LampDesk, Watch, ShoppingBag, Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,9 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 const categories = [
   { name: "Festive Gifts", path: "/festive" },
   { name: "Wedding Gifts", path: "/wedding" },
-  { name: "Personalised Gifts", path: "/personalised" },
-  { name: "Birthday Gifts", path: "/birthday" },
-  { name: "Anniversary Gifts", path: "/anniversary" },
+  { name: "Gifts", path: "/gifts" },
   { name: "Home Essentials", path: "/home-essentials" },
   { name: "Accessories", path: "/accessories" },
 ];
@@ -28,9 +26,7 @@ const categoryNav = [
   { name: "All Products", path: "/products", icon: Home, gradient: "from-rose-pink to-sunshine-yellow" },
   { name: "Festive Gifts", path: "/festive", icon: Sparkles, gradient: "from-sunshine-yellow to-lavender" },
   { name: "Wedding Gifts", path: "/wedding", icon: Gift, gradient: "from-lavender to-mint-green" },
-  { name: "Birthday Gifts", path: "/birthday", icon: Cake, gradient: "from-mint-green to-rose-pink" },
-  { name: "Anniversary", path: "/anniversary", icon: BookHeart, gradient: "from-rose-pink to-lavender" },
-  { name: "Personalised", path: "/personalised", icon: Package, gradient: "from-lavender to-sunshine-yellow" },
+  { name: "Gifts", path: "/gifts", icon: ShoppingBag, gradient: "from-mint-green to-rose-pink" },
   { name: "Premium Hampers", path: "/premium-hampers", icon: Award, gradient: "from-sunshine-yellow to-mint-green" },
   { name: "Home Essentials", path: "/home-essentials", icon: LampDesk, gradient: "from-lavender to-rose-pink" },
   { name: "Accessories", path: "/accessories", icon: Watch, gradient: "from-rose-pink to-mint-green" },
