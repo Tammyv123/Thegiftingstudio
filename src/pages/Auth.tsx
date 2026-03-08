@@ -134,6 +134,17 @@ const Auth = () => {
                 {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
               </Button>
 
+              {!isSignUp && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full"
+                  onClick={handleForgotPassword}
+                >
+                  Forgot Password?
+                </Button>
+              )}
+
               <Button
                 type="button"
                 variant="ghost"
