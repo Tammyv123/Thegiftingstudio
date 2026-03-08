@@ -60,6 +60,24 @@ const Auth = () => {
     setLoading(false);
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your email first.");
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Password reset link sent. Check your email.");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
@@ -115,6 +133,17 @@ const Auth = () => {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
               </Button>
+
+              {!isSignUp && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full"
+                  onClick={handleForgotPassword}
+                >
+                  Forgot Password?
+                </Button>
+              )}
 
               <Button
                 type="button"

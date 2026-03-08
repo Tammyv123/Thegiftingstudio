@@ -29,6 +29,7 @@ import Search from "./pages/Search";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
 import AdminPortal from "./pages/AdminPortal";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 // Wedding subcategories
@@ -77,6 +78,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/festive" element={<FestiveGifts />} />
