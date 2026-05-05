@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
 import { ProductForm } from "@/components/ProductForm";
+import { BulkProductUpload } from "@/components/BulkProductUpload";
 import { InventoryManagement } from "@/components/InventoryManagement";
 import { CategoryManagement } from "@/components/CategoryManagement";
 import { ProductCategoryDragDrop } from "@/components/ProductCategoryDragDrop";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Loader2, Package, FolderOpen, Boxes, Move } from "lucide-react";
+import { Loader2, Package, FolderOpen, Boxes, Move, Upload } from "lucide-react";
 
 const AdminPortal = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const AdminPortal = () => {
         <h1 className="text-3xl font-bold mb-6">Admin Portal</h1>
         
         <Tabs defaultValue="categories" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5">
             <TabsTrigger value="categories" className="gap-2">
               <FolderOpen className="h-4 w-4" />
               Categories
@@ -91,6 +92,10 @@ const AdminPortal = () => {
             <TabsTrigger value="add-product" className="gap-2">
               <Package className="h-4 w-4" />
               Add Product
+            </TabsTrigger>
+            <TabsTrigger value="bulk-upload" className="gap-2">
+              <Upload className="h-4 w-4" />
+              Bulk Upload
             </TabsTrigger>
           </TabsList>
           
@@ -140,6 +145,20 @@ const AdminPortal = () => {
               </CardHeader>
               <CardContent>
                 <ProductForm />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="bulk-upload">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Upload className="h-5 w-5 text-primary" />
+                  Bulk Upload (AI-powered, up to 100 products)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <BulkProductUpload />
               </CardContent>
             </Card>
           </TabsContent>
