@@ -142,6 +142,8 @@ export const BulkProductUpload = () => {
         updateRow(i, { status: "error", error: e.message || "Failed" });
         errorCount++;
       }
+      // Small delay between rows to avoid AI gateway rate limits
+      await new Promise((r) => setTimeout(r, 1200));
     }
 
     setProcessing(false);
