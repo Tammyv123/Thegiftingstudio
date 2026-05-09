@@ -12,6 +12,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Phone } from "lucide-react";
+import { z } from "zod";
+
+// Validation schema for checkout address
+const addressSchema = z.object({
+  fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  phone: z.string().regex(/^[0-9]{10}$/, "Phone must be exactly 10 digits"),
+  address: z.string().trim().min(10, "Address must be at least 10 characters").max(500, "Address must be less than 500 characters"),
+  city: z.string().trim().min(2, "City must be at least 2 characters").max(100, "City must be less than 100 characters"),
+  state: z.string().trim().min(2, "State must be at least 2 characters").max(100, "State must be less than 100 characters"),
+  pincode: z.string().regex(/^[0-9]{6}$/, "Pincode must be exactly 6 digits"),
+});
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -34,10 +45,10 @@ const Checkout = () => {
 
   const handleOrderOnWhatsApp = () => {
     const orderDetails = cartItems
-      .map(item => `${item.products.name} (Qty: ${item.quantity}) - ₹${Number(item.products.price) * item.quantity}`)
+      .map(item => `${item.products.name} (Qty: ${item.quantity}) - ₹${Math.round(Number(item.products.price) * item.quantity)}`)
       .join("\n");
     
-    const message = `Hi! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nShipping: ₹${shipping}\nTotal: ₹${total.toFixed(2)}\n\nDelivery Address:\n${address.fullName}\n${address.phone}\n${address.address}, ${address.city}, ${address.state} - ${address.pincode}`;
+    const message = `Hi! I'd like to place an order:\n\n${orderDetails}\n\nSubtotal: ₹${Math.round(subtotal)}\nShipping: ₹${shipping}\nTotal: ₹${Math.round(total)}\n\nDelivery Address:\n${address.fullName}\n${address.phone}\n${address.address}, ${address.city}, ${address.state} - ${address.pincode}`;
     
     window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, "_blank");
   };
@@ -45,8 +56,10 @@ const Checkout = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!address.fullName || !address.phone || !address.address || !address.city || !address.state || !address.pincode) {
-      toast.error("Please fill in all address fields");
+    // Validate address with zod schema
+    const validationResult = addressSchema.safeParse(address);
+    if (!validationResult.success) {
+      toast.error(validationResult.error.errors[0].message);
       return;
     }
 
@@ -81,31 +94,6 @@ const Checkout = () => {
         .insert(orderItems);
 
       if (itemsError) throw itemsError;
-
-      // START: ADD THIS BLOCK
-      // ---------------------------------------------------------
-      try {
-        const orderSummary = cartItems
-          .map(item => `${item.products.name} (x${item.quantity})`)
-          .join(", ");
-
-        // Call your backend to log to Excel/Sheets
-        await fetch('http://localhost:5000/log-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            orderDetails: orderSummary,
-            address: address,
-            total: total,
-            paymentMethod: paymentMethod
-          })
-        });
-      } catch (sheetError) {
-        console.error("Failed to log to sheet, but order was placed:", sheetError);
-        // We do not stop the flow here because the main order succeeded
-      }
-      // ---------------------------------------------------------
-      // END: ADD THIS BLOCK
 
       await clearCart();
       toast.success("Order placed successfully!");
@@ -152,6 +140,7 @@ const Checkout = () => {
                         id="fullName"
                         value={address.fullName}
                         onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -161,7 +150,9 @@ const Checkout = () => {
                         id="phone"
                         type="tel"
                         value={address.phone}
-                        onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                        onChange={(e) => setAddress({ ...address, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                        maxLength={10}
+                        placeholder="10-digit phone number"
                         required
                       />
                     </div>
@@ -173,6 +164,7 @@ const Checkout = () => {
                       id="address"
                       value={address.address}
                       onChange={(e) => setAddress({ ...address, address: e.target.value })}
+                      maxLength={500}
                       required
                     />
                   </div>
@@ -184,6 +176,7 @@ const Checkout = () => {
                         id="city"
                         value={address.city}
                         onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -193,6 +186,7 @@ const Checkout = () => {
                         id="state"
                         value={address.state}
                         onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                        maxLength={100}
                         required
                       />
                     </div>
@@ -201,7 +195,9 @@ const Checkout = () => {
                       <Input
                         id="pincode"
                         value={address.pincode}
-                        onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
+                        onChange={(e) => setAddress({ ...address, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) })}
+                        maxLength={6}
+                        placeholder="6-digit pincode"
                         required
                       />
                     </div>
@@ -253,13 +249,13 @@ const Checkout = () => {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex justify-between text-sm">
                     <span>{item.products.name} x{item.quantity}</span>
-                    <span>₹{(Number(item.products.price) * item.quantity).toFixed(2)}</span>
+                    <span>₹{Math.round(Number(item.products.price) * item.quantity)}</span>
                   </div>
                 ))}
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>₹{subtotal.toFixed(2)}</span>
+                    <span>₹{Math.round(subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
@@ -267,7 +263,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total</span>
-                    <span className="text-primary">₹{total.toFixed(2)}</span>
+                    <span className="text-primary">₹{Math.round(total)}</span>
                   </div>
                 </div>
               </CardContent>

@@ -6,10 +6,13 @@ export interface Product {
   name: string;
   price: number;
   image: string;
+  images?: string[] | null;
+  colors?: string[] | null;
   category: string;
-  description?: string;
+  description?: string | null;
+  subcategory?: string | null;
   stock?: number;
-  low_stock_threshold?: number;
+  low_stock_threshold?: number | null;
 }
 
 export const useProducts = (category?: string) => {
@@ -19,7 +22,10 @@ export const useProducts = (category?: string) => {
       let query = supabase.from("products").select("*");
       
       if (category) {
-        query = query.eq("category", category);
+        // Extract the first word for pattern matching (e.g., "Festive" from "Festive Gift")
+        const categoryPattern = category.split(' ')[0];
+        // Use ilike for case-insensitive pattern matching to include all related products
+        query = query.ilike("category", `%${categoryPattern}%`);
       }
       
       const { data, error } = await query;

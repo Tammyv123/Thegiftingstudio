@@ -20,6 +20,7 @@ export type Database = {
           id: string
           product_id: string
           quantity: number
+          selected_color: string | null
           user_id: string
         }
         Insert: {
@@ -27,6 +28,7 @@ export type Database = {
           id?: string
           product_id: string
           quantity?: number
+          selected_color?: string | null
           user_id: string
         }
         Update: {
@@ -34,6 +36,7 @@ export type Database = {
           id?: string
           product_id?: string
           quantity?: number
+          selected_color?: string | null
           user_id?: string
         }
         Relationships: [
@@ -45,6 +48,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          image: string | null
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          slug?: string
+        }
+        Relationships: []
       }
       order_items: {
         Row: {
@@ -162,6 +189,74 @@ export type Database = {
           subcategory?: string | null
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          photos: string[] | null
+          product_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photos?: string[] | null
+          product_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          photos?: string[] | null
+          product_id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subcategories: {
+        Row: {
+          category_id: string
+          created_at: string | null
+          id: string
+          image: string | null
+          name: string
+          slug: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          slug: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

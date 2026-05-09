@@ -17,14 +17,14 @@ const WeddingGifts = () => {
       title: "Trays",
       description: "Elegant trays for gifting",
       image: "/WeddingPhotos/trays.jpg",
-      link: "/wedding/trays",
+      link: "/wedding/tray",
       gradient: "bg-gradient-to-br from-rose-pink/20 to-sunshine-yellow/20",
     },
     {
       title: "Return Favors",
       description: "Thoughtful keepsakes for guests",
       image: "/WeddingPhotos/ReturnFavours.jpeg",
-      link: "/wedding/return-favors",
+      link: "/wedding/return-favour",
       gradient: "bg-gradient-to-br from-lavender/20 to-mint-green/20",
     },
     {
@@ -52,7 +52,7 @@ const WeddingGifts = () => {
       title: "Gifts",
       description: "Perfect gifts for every taste",
       image: "https://images.unsplash.com/photo-1612197525106-36be9c2f8933?w=600",
-      link: "/wedding/gifts",
+      link: "/wedding/gift",
       gradient: "bg-gradient-to-br from-sky-400/20 to-indigo-400/20",
     },
   ];
@@ -62,14 +62,15 @@ const WeddingGifts = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-80 overflow-hidden bg-gradient-to-br from-lavender/30 to-mint-green/30">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200')] bg-cover bg-center opacity-20" />
+      <section className="relative h-80 overflow-hidden bg-gradient-to-br from-rose-pink/30 to-sunshine-yellow/30">
+        <div className="absolute inset-0 bg-[url('/images/weddinggifts.png')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-black/10" />
         <div className="relative flex h-full items-center justify-center text-center">
           <div className="max-w-3xl px-4">
-            <h1 className="mb-4 text-5xl font-bold">Wedding Gifts</h1>
-            <p className="text-lg text-muted-foreground">
+            {/* <h1 className="mb-4 text-5xl font-bold">Wedding Gifts</h1> */}
+            {/* <p className="text-lg text-muted-foreground">
               Bless their new journey with elegant and memorable wedding gifts
-            </p>
+            </p> */}
           </div>
         </div>
       </section>

@@ -11,6 +11,8 @@ interface WishlistItem {
     name: string;
     price: number;
     image: string;
+    images: string[] | null;
+    colors: string[] | null;
     category: string;
   };
 }
@@ -42,7 +44,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     const { data, error } = await supabase
       .from("wishlist_items")
-      .select("*, products(*)")
+      .select("*, products(id, name, price, image, images, colors, category)")
       .order("created_at", { ascending: false });
 
     if (error) {

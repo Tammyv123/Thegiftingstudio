@@ -10,14 +10,12 @@ import { Chatbot } from "./components/Chatbot";
 import Index from "./pages/Index";
 import FestiveGifts from "./pages/FestiveGifts";
 import WeddingGifts from "./pages/WeddingGifts";
-import PersonalisedGifts from "./pages/PersonalisedGifts";
-import BirthdayGifts from "./pages/BirthdayGifts";
-import AnniversaryGifts from "./pages/AnniversaryGifts";
+import Gifts from "./pages/Gifts";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import PremiumHampers from "./pages/PremiumHampers";
 import GourmetHampers from "./pages/GourmetHampers";
-import CorporateGifts from "./pages/CorporateGifts";
+// import CorporateGifts from "./pages/CorporateGifts";
 import HomeEssentials from "./pages/HomeEssentials";
 import Accessories from "./pages/Accessories";
 import PartySupplies from "./pages/PartySupplies";
@@ -29,6 +27,7 @@ import Search from "./pages/Search";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
 import AdminPortal from "./pages/AdminPortal";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 // Wedding subcategories
@@ -39,12 +38,6 @@ import WeddingProps from "./pages/wedding/WeddingProps";
 import WeddingHampers from "./pages/wedding/WeddingHampers";
 import WeddingGift from "./pages/wedding/WeddingGift";
 
-// Birthday subcategories
-import GiftForHer from "./pages/birthday/GiftForHer";
-import GiftForHim from "./pages/birthday/GiftForHim";
-import GiftForSibling from "./pages/birthday/GiftForSibling";
-import GiftForMother from "./pages/birthday/GiftForMother";
-import GiftForFather from "./pages/birthday/GiftForFather";
 
 // Accessories subcategories
 import Earrings from "./pages/accessories/Earrings";
@@ -54,12 +47,22 @@ import Hand from "./pages/accessories/Hand";
 
 // Festive subcategories
 import Diwali from "./pages/festive/Diwali";
+import DiyasCandles from "./pages/festive/diwali/DiyasCandles";
 import Holi from "./pages/festive/Holi";
 import Eid from "./pages/festive/Eid";
+import Ramzan from "./pages/festive/Ramzan";
 import Rakshabandhan from "./pages/festive/Rakshabandhan";
 import Christmas from "./pages/festive/Christmas";
 import NewYear from "./pages/festive/NewYear";
 import Lohri from "./pages/festive/Lohri";
+
+// Gifts subcategories
+import GiftForHim from "./pages/gifts/GiftForHim";
+import GiftForHer from "./pages/gifts/GiftForHer";
+import GiftForMother from "./pages/gifts/GiftForMother";
+import GiftForFather from "./pages/gifts/GiftForFather";
+import GiftForSibling from "./pages/gifts/GiftForSibling";
+import GiftForCorporate from "./pages/gifts/GiftsForCorporate"
 
 const queryClient = new QueryClient();
 
@@ -75,16 +78,15 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/festive" element={<FestiveGifts />} />
                 <Route path="/wedding" element={<WeddingGifts />} />
-                <Route path="/personalised" element={<PersonalisedGifts />} />
-                <Route path="/birthday" element={<BirthdayGifts />} />
-                <Route path="/anniversary" element={<AnniversaryGifts />} />
+                <Route path="/gifts" element={<Gifts />} />
                 <Route path="/premium-hampers" element={<PremiumHampers />} />
                 <Route path="/gourmet" element={<GourmetHampers />} />
-                <Route path="/corporate" element={<CorporateGifts />} />
+                {/* <Route path="/corporate" element={<CorporateGifts />} /> */}
                 <Route path="/home-essentials" element={<HomeEssentials />} />
                 <Route path="/accessories" element={<Accessories />} />
                 <Route path="/party-supplies" element={<PartySupplies />} />
@@ -97,12 +99,6 @@ const App = () => (
                 <Route path="/wedding/hampers" element={<WeddingHampers />} />
                 <Route path="/wedding/gift" element={<WeddingGift />} />
                 
-                {/* Birthday subcategory routes */}
-                <Route path="/birthday/gift-for-her" element={<GiftForHer />} />
-                <Route path="/birthday/gift-for-him" element={<GiftForHim />} />
-                <Route path="/birthday/gift-for-sibling" element={<GiftForSibling />} />
-                <Route path="/birthday/gift-for-mother" element={<GiftForMother />} />
-                <Route path="/birthday/gift-for-father" element={<GiftForFather />} />
                 
                 {/* Accessories subcategory routes */}
                 <Route path="/accessories/earrings" element={<Earrings />} />
@@ -110,15 +106,25 @@ const App = () => (
                 <Route path="/accessories/necklace" element={<Necklace />} />
                 <Route path="/accessories/hand" element={<Hand />} />
                 
-                {/* Festive subcategory routes */}
+{/* Festive subcategory routes */}
                 <Route path="/festive/diwali" element={<Diwali />} />
+                <Route path="/festive/diwali/diyas-candles" element={<DiyasCandles />} />
                 <Route path="/festive/holi" element={<Holi />} />
                 <Route path="/festive/eid" element={<Eid />} />
+                <Route path="/festive/ramzan" element={<Ramzan />} />
                 <Route path="/festive/rakshabandhan" element={<Rakshabandhan />} />
                 <Route path="/festive/christmas" element={<Christmas />} />
                 <Route path="/festive/new-year" element={<NewYear />} />
-                <Route path="/festive/lohri" element={<Lohri />} />
-                <Route path="/cart" element={<Cart />} />
+                <Route path="/festive/lohri" element={<Lohri />} />                
+                {/* Gift subcategory routes */}
+                <Route path="/gifts/gift-for-him" element={<GiftForHim />} />
+                <Route path="/gifts/gift-for-her" element={<GiftForHer />} />
+                <Route path="/gifts/gift-for-mother" element={<GiftForMother />} />
+                <Route path="/gifts/gift-for-father" element={<GiftForFather />} />
+                <Route path="/gifts/gift-for-sibling" element={<GiftForSibling />} />
+                                <Route path="/gifts/gift-for-corporate" element={<GiftForCorporate />} />
+
+                                <Route path="/cart" element={<Cart />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/contact" element={<Contact />} />

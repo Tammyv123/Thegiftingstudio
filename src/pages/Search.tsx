@@ -51,6 +51,8 @@ const Search = () => {
                   name={product.name}
                   price={Number(product.price)}
                   image={product.image}
+                  images={product.images}
+                  colors={product.colors}
                   category={product.category}
                 />
               ))}

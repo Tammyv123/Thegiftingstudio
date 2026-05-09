@@ -6,15 +6,17 @@ import { ProductFilters } from "@/components/ProductFilters";
 import { useProducts } from "@/hooks/useProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
 import { Card, CardContent } from "@/components/ui/card";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const festiveCategories = [
-  { name: "Holi", path: "/festive/holi", image: "https://images.unsplash.com/photo-1583241800698-c318921e0f01?w=400", description: "Festival of Colors" },
-  { name: "Diwali", path: "/festive/diwali", image: "https://images.unsplash.com/photo-1605649487212-47b9e5ffbb2f?w=400", description: "Festival of Lights" },
-  { name: "Christmas", path: "/festive/christmas", image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=400", description: "Season of Joy" },
-  { name: "New Year", path: "/festive/new-year", image: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=400", description: "New Beginnings" },
-  { name: "Rakshabandhan", path: "/festive/rakshabandhan", image: "https://images.unsplash.com/photo-1598520106830-8c45c2035460?w=400", description: "Bond of Siblings" },
-  { name: "Eid", path: "/festive/eid", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400", description: "Blessed Celebrations" },
-  { name: "Lohri", path: "/festive/lohri", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", description: "Harvest Festival" },
+  { name: "Holi", path: "/festive/holi", image: "/images/holi.png", description: "Festival of Colors" },
+  { name: "Diwali", path: "/festive/diwali", image: "/images/diwali.png", description: "Festival of Lights" },
+  { name: "Christmas", path: "/festive/christmas", image: "/images/christmas.png", description: "Season of Joy" },
+  { name: "New Year", path: "/festive/new-year", image: "/images/newyear.png", description: "New Beginnings" },
+  { name: "Rakshabandhan", path: "/festive/rakshabandhan", image: "/images/rakhi.png", description: "Bond of Siblings" },
+  { name: "Eid", path: "/festive/eid", image: "/images/eid.png", description: "Blessed Celebrations" },
+  { name: "Ramzan", path: "/festive/ramzan", image: "/images/ramzaan.png", description: "Holy Month Gifts" },
+  { name: "Lohri", path: "/festive/lohri", image: "/images/lohri.png", description: "Harvest Festival" },
 ];
 
 const FestiveGifts = () => {
@@ -28,13 +30,14 @@ const FestiveGifts = () => {
       
       {/* Banner */}
       <section className="relative h-80 overflow-hidden bg-gradient-to-br from-rose-pink/30 to-sunshine-yellow/30">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('/images/festivegifts.png')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-black/10" />
         <div className="relative flex h-full items-center justify-center text-center">
           <div className="max-w-3xl px-4">
-            <h1 className="mb-4 text-5xl font-bold">Festive Gifts</h1>
-            <p className="text-lg text-muted-foreground">
+            {/* <h1 className="mb-4 text-5xl font-bold text-white">Festive Gifts</h1>
+            <p className="text-lg text-white/90">
               Celebrate every festival with our handpicked collection of traditional and modern gift hampers
-            </p>
+            </p> */}
           </div>
         </div>
       </section>
@@ -67,11 +70,14 @@ const FestiveGifts = () => {
       {/* All Products Grid */}
       <section className="container mx-auto px-4 py-16">
         <h2 className="mb-8 text-center text-3xl font-bold">All Festive Products</h2>
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Festive" />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 

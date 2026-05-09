@@ -137,7 +137,7 @@ export const InventoryManagement = () => {
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell className="capitalize">{product.category}</TableCell>
-                  <TableCell className="text-right">${product.price.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">₹{Math.round(product.price)}</TableCell>
                   <TableCell className="text-center">
                     <Badge variant={status.variant}>{status.label}</Badge>
                   </TableCell>

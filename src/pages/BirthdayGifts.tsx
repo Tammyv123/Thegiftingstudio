@@ -6,9 +6,10 @@ import { ProductFilters } from "@/components/ProductFilters";
 import { useProducts } from "@/hooks/useProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
 import { Card } from "@/components/ui/card";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const birthdayCategories = [
-  { name: "Gifts for Mother", path: "/birthday/gift-for-mother", image: "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?w=400", description: "Make mom feel special" },
+  { name: "Gifts for Mother", path: "/birthday/gift-for-mother", image: "/images/mom.png", description: "Make mom feel special" },
   { name: "Gifts for Father", path: "/birthday/gift-for-father", image: "https://images.unsplash.com/photo-1560003355-5270b2e45da6?w=400", description: "For the best dad" },
   { name: "Gifts for Siblings", path: "/birthday/gift-for-sibling", image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400", description: "Sibling love" },
   { name: "Gifts for Him", path: "/birthday/gift-for-him", image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400", description: "Perfect for him" },
@@ -64,11 +65,14 @@ const BirthdayGifts = () => {
       {/* All Products Grid */}
       <section className="container mx-auto px-4 py-16">
         <h2 className="mb-8 text-center text-3xl font-bold">All Birthday Products</h2>
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Birthday" />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 

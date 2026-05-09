@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductFilters } from "@/components/ProductFilters";
 import { useProducts } from "@/hooks/useProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const HomeEssentials = () => {
   const { data: allProducts = [], isLoading } = useProducts();
@@ -22,11 +23,14 @@ const HomeEssentials = () => {
           <p className="text-muted-foreground">Make your home special with our curated collection</p>
         </div>
 
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Home Essentials" />
+        </div>
 
         {isLoading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

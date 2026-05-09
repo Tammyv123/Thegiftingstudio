@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductFilters } from "@/components/ProductFilters";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 import { useSubcategoryProducts } from "@/hooks/useSubcategoryProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
 
 const WeddingTray = () => {
-  const { data: products = [] } = useSubcategoryProducts("Wedding", "Tray");
+  const { data: products = [] } = useSubcategoryProducts("wedding gift", "trays");
   const [sortBy, setSortBy] = useState("default");
   const sortedProducts = useSortedProducts(products, sortBy);
 
@@ -27,11 +28,17 @@ const WeddingTray = () => {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton 
+            defaultCategory="wedding gift" 
+            defaultSubcategory="trays"
+          />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 
@@ -40,7 +47,13 @@ const WeddingTray = () => {
               name={product.name}
               price={Number(product.price)}
               image={product.image}
+              images={product.images}
+              colors={product.colors}
               category={product.category}
+              description={product.description}
+              subcategory={product.subcategory}
+              stock={product.stock}
+              low_stock_threshold={product.low_stock_threshold}
             />
           ))}
         </div>

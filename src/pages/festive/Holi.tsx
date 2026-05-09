@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductFilters } from "@/components/ProductFilters";
 import { useSubcategoryProducts } from "@/hooks/useSubcategoryProducts";
 import { useSortedProducts } from "@/hooks/useSortedProducts";
+import { AdminAddProductButton } from "@/components/AdminAddProductButton";
 
 const Holi = () => {
   const { data: products = [] } = useSubcategoryProducts("Festive", "Holi");
@@ -15,7 +16,7 @@ const Holi = () => {
       <Navbar />
       
       <section className="relative h-80 overflow-hidden bg-gradient-to-br from-sunshine-yellow/30 to-rose-pink/30">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1583241800698-c318921e0f01?w=1200')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('/images/holi.png')] bg-cover bg-center opacity-20" />
         <div className="relative flex h-full items-center justify-center text-center">
           <div className="max-w-3xl px-4">
             <h1 className="mb-4 text-5xl font-bold">Holi Gifts</h1>
@@ -27,11 +28,14 @@ const Holi = () => {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <ProductFilters 
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          productsCount={sortedProducts.length}
-        />
+        <div className="flex items-center justify-between mb-6">
+          <ProductFilters 
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            productsCount={sortedProducts.length}
+          />
+          <AdminAddProductButton defaultCategory="Festive" defaultSubcategory="Holi" />
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {sortedProducts.map((product) => (
             <ProductCard 
