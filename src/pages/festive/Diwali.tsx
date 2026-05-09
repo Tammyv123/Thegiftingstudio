@@ -13,6 +13,7 @@ const diwaliSubcategories = [
     name: "Diyas & Candles", 
     path: "/festive/diwali/diyas-candles", 
     image: "/images/diyas.png", 
+    // image: "/image/diwali.png", 
     description: "Traditional diyas & decorative candles" 
   },
 ];

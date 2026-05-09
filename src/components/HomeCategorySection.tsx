@@ -34,7 +34,7 @@ const categoryRouteMap: Record<string, string> = {
   "home essentials": "/home-essentials",
   "accessories": "/accessories",
   "party supplies": "/party-supplies",
-  // "flowers": "/products?category=Flowers",
+  "flowers": "/products?category=Flowers",
   "diyas-candles": "/festive/diwali/diyas-candles",
 };
 

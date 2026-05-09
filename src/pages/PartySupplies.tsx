@@ -16,6 +16,8 @@ const PartySupplies = () => {
   return (
     <div className="min-h-screen bg-gradient-soft">
       <Navbar />
+
+      
       
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12 text-center">

@@ -17,7 +17,6 @@ const PremiumHampers = () => {
       
       <section className="relative h-80 overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/hampers.png')] bg-cover bg-center" />
-         <div className="absolute inset-0 bg-black/10" />
         <div className="relative flex h-full items-center justify-center text-center">
           {/* <div className="max-w-3xl px-4">
             <h1 className="mb-4 text-5xl font-bold">Premium Hampers</h1>

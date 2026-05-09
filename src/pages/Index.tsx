@@ -111,13 +111,13 @@ const Index = () => {
       link: "/gifts",
       gradient: "bg-gradient-to-br from-mint-green/20 to-lavender/20",
     },
-    {
-      title: "Corporate Gifts",
-      description: "Appreciate your team",
-      image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600",
-      link: "/corporate",
-      gradient: "bg-gradient-to-br from-sky-400/20 to-indigo-400/20",
-    },
+    // {
+    //   title: "Corporate Gifts",
+    //   description: "Appreciate your team",
+    //   image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=600",
+    //   link: "/corporate",
+    //   gradient: "bg-gradient-to-br from-sky-400/20 to-indigo-400/20",
+    // },
   ];
 
   return (

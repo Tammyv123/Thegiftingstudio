@@ -31,7 +31,6 @@ const FestiveGifts = () => {
       {/* Banner */}
       <section className="relative h-80 overflow-hidden bg-gradient-to-br from-rose-pink/30 to-sunshine-yellow/30">
         <div className="absolute inset-0 bg-[url('/images/festivegifts.png')] bg-cover bg-center" />
-        <div className="absolute inset-0 bg-black/10" />
         <div className="relative flex h-full items-center justify-center text-center">
           <div className="max-w-3xl px-4">
             {/* <h1 className="mb-4 text-5xl font-bold text-white">Festive Gifts</h1>

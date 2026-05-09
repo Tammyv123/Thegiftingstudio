@@ -16,7 +16,7 @@ const Ramzan = () => {
       <Navbar />
       
       <section className="relative h-80 overflow-hidden bg-gradient-to-br from-emerald-500/30 to-teal-500/30">
-        <div className="absolute inset-0 bg-[url('/images/ramzaan.png')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('/image/ramzaan.png')] bg-cover bg-center opacity-20" />
         <div className="relative flex h-full items-center justify-center text-center">
           <div className="max-w-3xl px-4">
             <h1 className="mb-4 text-5xl font-bold">Ramzan Gifts</h1>

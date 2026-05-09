@@ -27,7 +27,7 @@ const CATEGORIES = [
   "home essentials",
   "accessories",
   "party supplies",
-  "corporate gift",
+  // "corporate gift",
   "gourmet hampers"
 ];
 

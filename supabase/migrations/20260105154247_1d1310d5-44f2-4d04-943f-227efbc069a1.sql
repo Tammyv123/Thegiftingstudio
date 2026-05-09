@@ -61,7 +61,7 @@ INSERT INTO public.categories (name, slug) VALUES
   ('Home Essentials', 'home essentials'),
   ('Accessories', 'accessories'),
   ('Party Supplies', 'party supplies'),
-  ('Corporate Gift', 'corporate gift'),
+  -- ('Corporate Gift', 'corporate gift'),
   ('Gourmet Hampers', 'gourmet hampers');
 
 -- Insert default subcategories
@@ -88,7 +88,10 @@ CROSS JOIN (VALUES
   ('birthday gift', 'Gift For Mother', 'gift for mother'),
   ('birthday gift', 'Gift For Father', 'gift for father'),
   ('birthday gift', 'Gift For Sibling', 'gift for sibling'),
+<<<<<<< HEAD
   ('birthday gift', 'Gift For Corporate', 'gift for Corporate'),
+=======
+>>>>>>> 2aafc9342f4a9473be7c88cc57024451c5205b1e
   ('accessories', 'Earrings', 'earrings'),
   ('accessories', 'Necklace', 'necklace'),
   ('accessories', 'Hand', 'hand'),
